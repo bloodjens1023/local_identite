@@ -11,7 +11,7 @@
     formdata.append("id", id);
 
     let response;
-    response = await fetch("https://bloodjens.pythonanywhere.com/api_liker/", {
+    response = await fetch("http://localhost:8000/api_liker/", {
       method: "POST",
       body: formdata,
     });

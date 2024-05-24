@@ -20,7 +20,7 @@
   }, 1000);
 
   function filter(a) {
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    return "http://localhost:8000/" + a;
   }
   let val = "";
   let post = [];
@@ -28,9 +28,7 @@
   const getPosts = async () => {
     users = sessionStorage.getItem("chef");
 
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/afficheChef/" + users
-    );
+    const res = await fetch("http://localhost:8000/afficheChef/" + users);
 
     const data = await res.json();
     const filter = data.data;

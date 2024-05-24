@@ -15,7 +15,7 @@
     let co = [];
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_notification_non_lue/" + id
+        "http://localhost:8000/api_notification_non_lue/" + id
       );
       const data = await response.json();
       co = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
@@ -30,7 +30,7 @@
     let co = [];
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_notification_lire/" + id
+        "http://localhost:8000/api_notification_lire/" + id
       );
       const data = await response.json();
       co = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON

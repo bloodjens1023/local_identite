@@ -21,9 +21,7 @@
   const getPosts = async () => {
     users = sessionStorage.getItem("chef");
 
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/afficheChef/" + users
-    );
+    const res = await fetch("http://localhost:8000/afficheChef/" + users);
 
     const data = await res.json();
     const filter = data.data;
@@ -55,13 +53,10 @@
     let response;
     try {
       let use = sessionStorage.getItem("chef");
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/updateChef/" + use,
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/updateChef/" + use, {
+        method: "POST",
+        body: formdata,
+      });
 
       loads = true;
 

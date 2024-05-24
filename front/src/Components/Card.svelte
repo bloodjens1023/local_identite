@@ -18,7 +18,7 @@
     let co = [];
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_get_comment/" + id
+        "http://localhost:8000/api_get_comment/" + id
       );
       const data = await response.json();
       co = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON

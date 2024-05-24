@@ -25,13 +25,10 @@
     let id = sessionStorage.getItem("identifiant");
     let formdata = new FormData();
     formdata.append("note", note.toString());
-    const response = await fetch(
-      "https://bloodjens.pythonanywhere.com/ajouter_retour/" + id,
-      {
-        method: "POST",
-        body: formdata,
-      }
-    );
+    const response = await fetch("http://localhost:8000/ajouter_retour/" + id, {
+      method: "POST",
+      body: formdata,
+    });
     goto("/Utilisateur/Attente");
   }
 </script>

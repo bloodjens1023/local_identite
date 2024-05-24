@@ -22,7 +22,7 @@
     let co = [];
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_commenter/" + id,
+        "http://localhost:8000/api_commenter/" + id,
         {
           method: "POST",
           body: formdata,

@@ -860,15 +860,15 @@ def refuser_demande_arrondissement(request,id):
                                  lien = "/Utilisateur/XDemande",
                                  )
             notif.save()
-            account_sid = os.getenv('TWILIO_ACCOUNT_SID')
-            auth_token = os.getenv('TWILIO_AUTH_TOKEN')
-            client = Client(account_sid, auth_token)
+            # account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+            # auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+            # client = Client(account_sid, auth_token)
 
-            message = client.messages.create(
-            from_='+19164768748',
-            body=' Bonjour {} {}, nous sommes dans l\'obligence de refuser votre demande le {} à cause de plusieur motif qui sont : {}.'.format(dem.nom, dem.prenom, dem.dateDebut, temps),
-            to='+261320410659'
-            )
+            # message = client.messages.create(
+            # from_='+19164768748',
+            # body=' Bonjour {} {}, nous sommes dans l\'obligence de refuser votre demande le {} à cause de plusieur motif qui sont : {}.'.format(dem.nom, dem.prenom, dem.dateDebut, temps),
+            # to='+261320410659'
+            # )
             contenue = ""
             if(dem.typeDocument == "primata"):
                 contenue = """
@@ -951,15 +951,15 @@ def accepter_demande_arrondissement(request,id):
             notif.save()
             dem.etatDocument = "accepter"
             dem.save()
-            account_sid = os.getenv('TWILIO_ACCOUNT_SID')
-            auth_token = os.getenv('TWILIO_AUTH_TOKEN')
-            client = Client(account_sid, auth_token)
+            # account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+            # auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+            # client = Client(account_sid, auth_token)
 
-            message = client.messages.create(
-            from_='+19164768748',
-            body=' Bonjour {} {}, nous sommes ravit de informer que votre demande de carte National d\'identité a été approuvé rendez-vous le {} à {} afin de valider et recuperer votre CNI.'.format(dem.nom, dem.prenom, dats, temps),
-            to='+261320410659'
-            )
+            # message = client.messages.create(
+            # from_='+19164768748',
+            # body=' Bonjour {} {}, nous sommes ravit de informer que votre demande de carte National d\'identité a été approuvé rendez-vous le {} à {} afin de valider et recuperer votre CNI.'.format(dem.nom, dem.prenom, dats, temps),
+            # to='+261320410659'
+            # )
 
             contenue = ""
             if(dem.typeDocument == "primata"):

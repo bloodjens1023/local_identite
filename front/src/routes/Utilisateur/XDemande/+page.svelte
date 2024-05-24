@@ -36,9 +36,7 @@
       if (users == null || users == undefined || users == "") {
         goto("/Error");
       }
-      const res = await fetch(
-        "https://bloodjens.pythonanywhere.com/afficheDocument/" + users
-      );
+      const res = await fetch("http://localhost:8000/afficheDocument/" + users);
 
       const data = await res.json();
 

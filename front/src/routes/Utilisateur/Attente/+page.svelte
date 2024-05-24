@@ -15,9 +15,7 @@
 
   async function fetchUtilisateur() {
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_affiche_pub/"
-      );
+      const response = await fetch("http://localhost:8000/api_affiche_pub/");
       const data = await response.json();
       users = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
       filtrer = users;
@@ -28,7 +26,7 @@
   }
 
   function filter(a) {
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    return "http://localhost:8000/" + a;
   }
   onMount(() => {
     try {

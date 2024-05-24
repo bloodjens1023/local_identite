@@ -38,8 +38,7 @@
       } else {
         try {
           const response = await fetch(
-            "https://bloodjens.pythonanywhere.com/api_stat_arrondissement_chef/" +
-              id
+            "http://localhost:8000/api_stat_arrondissement_chef/" + id
           );
           const data = await response.json();
           const co = data.data;

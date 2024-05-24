@@ -20,12 +20,10 @@
   $: actuel = [];
 
   function filter(a) {
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    return "http://localhost:8000/" + a;
   }
   const getPosts = async (user) => {
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/updateRdv/" + user
-    );
+    const res = await fetch("http://localhost:8000/updateRdv/" + user);
 
     const data = await res.json();
     const filter = data;
@@ -43,9 +41,7 @@
   let filtrer = users;
   async function fetchUtilisateur() {
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/afficheRdvTous/"
-      );
+      const response = await fetch("http://localhost:8000/afficheRdvTous/");
       const data = await response.json();
       users = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
       filtrer = users;
@@ -77,7 +73,7 @@
     event.preventDefault();
 
     let response;
-    response = fetch("https://bloodjens.pythonanywhere.com/updateRdv/" + ids);
+    response = fetch("http://localhost:8000/updateRdv/" + ids);
 
     // const data = await response.json();
     // const message = data.data;

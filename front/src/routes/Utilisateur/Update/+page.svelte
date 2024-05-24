@@ -23,7 +23,7 @@
     users = sessionStorage.getItem("identifiant");
 
     const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/afficheUtilisateur/" + users
+      "http://localhost:8000/afficheUtilisateur/" + users
     );
 
     const data = await res.json();
@@ -58,13 +58,10 @@
     loads = true;
     try {
       let use = sessionStorage.getItem("identifiant");
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/updateUtilisateur/" + use,
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/updateUtilisateur/" + use, {
+        method: "POST",
+        body: formdata,
+      });
 
       datas = await response.json();
       const message = datas.message;

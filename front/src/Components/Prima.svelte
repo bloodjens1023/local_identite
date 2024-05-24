@@ -8,12 +8,10 @@
   export let user = "";
 
   function filter(a) {
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    return "http://localhost:8000/" + a;
   }
   const getPosts = async () => {
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/supprimerDocument/" + user
-    );
+    const res = await fetch("http://localhost:8000/supprimerDocument/" + user);
 
     const data = await res.json();
     const filter = data;

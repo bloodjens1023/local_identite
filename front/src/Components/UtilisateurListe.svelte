@@ -14,7 +14,7 @@
   $: actuel = [];
   const getPosts = async (user) => {
     const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/supprimerUtilisateur/" + user
+      "http://localhost:8000/supprimerUtilisateur/" + user
     );
 
     const data = await res.json();
@@ -37,7 +37,7 @@
   async function fetchUtilisateur() {
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/afficheUtilisateurTout/"
+        "http://localhost:8000/afficheUtilisateurTout/"
       );
       const data = await response.json();
       users = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON

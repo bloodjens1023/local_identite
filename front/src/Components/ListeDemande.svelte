@@ -6,7 +6,7 @@
   import toast, { Toaster } from "svelte-french-toast";
 
   function filter(a) {
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    return "http://localhost:8000/" + a;
   }
   let donne = {
     un: "",
@@ -33,8 +33,7 @@
       let formdata = new FormData();
       formdata.append("motif", motif);
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_refuser_demande/" +
-          contenu.id,
+        "http://localhost:8000/api_refuser_demande/" + contenu.id,
         {
           method: "POST",
           body: formdata,
@@ -88,8 +87,7 @@
       formdata.append("temp", temp);
       formdata.append("code", val);
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_accepter_demande/" +
-          contenu.id,
+        "http://localhost:8000/api_accepter_demande/" + contenu.id,
         {
           method: "POST",
           body: formdata,
@@ -117,7 +115,7 @@
       let formdata = new FormData();
       formdata.append("id_document", contenu.id);
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/gerer_cni/" + contenu.id,
+        "http://localhost:8000/gerer_cni/" + contenu.id,
         {
           method: "POST",
           body: formdata,

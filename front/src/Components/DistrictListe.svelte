@@ -20,9 +20,7 @@
   $: actuel = [];
 
   const getPosts = async (user) => {
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/supprimerDistrict/" + user
-    );
+    const res = await fetch("http://localhost:8000/supprimerDistrict/" + user);
 
     const data = await res.json();
     const filter = data;
@@ -48,9 +46,7 @@
   let filtrer = users;
   async function fetchUtilisateur() {
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/afficheDistrict/"
-      );
+      const response = await fetch("http://localhost:8000/afficheDistrict/");
       const data = await response.json();
       users = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
       filtrer = users;
@@ -84,13 +80,10 @@
       formdata.append("region", region);
 
       let response;
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_insertion_district/",
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/api_insertion_district/", {
+        method: "POST",
+        body: formdata,
+      });
 
       const data = await response.json();
       const message = data.message;
@@ -133,13 +126,10 @@
       formdata.append("region", region);
 
       let response;
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/updateDistrict/" + ids,
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/updateDistrict/" + ids, {
+        method: "POST",
+        body: formdata,
+      });
 
       const data = await response.json();
       const message = data.message;
@@ -172,9 +162,7 @@
   };
   async function fetchregion() {
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/get_region/"
-      );
+      const response = await fetch("http://localhost:8000/get_region/");
       const data = await response.json();
       regions = data.data;
     } catch (error) {

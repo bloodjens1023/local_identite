@@ -18,7 +18,7 @@
     loads = false;
   }, 1000);
   function filter(a) {
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    return "http://localhost:8000/" + a;
   }
   let val = "";
   let post = [];
@@ -27,7 +27,7 @@
     users = sessionStorage.getItem("admin");
 
     const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/afficheUtilisateur/" + users
+      "http://localhost:8000/afficheUtilisateur/" + users
     );
 
     const data = await res.json();

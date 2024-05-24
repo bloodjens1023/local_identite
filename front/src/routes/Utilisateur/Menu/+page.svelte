@@ -9,8 +9,8 @@
   import Rate from "../../../Components/Rate.svelte";
 
   function filter(a) {
-    console.log("https://bloodjens.pythonanywhere.com/" + a);
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    console.log("http://localhost:8000/" + a);
+    return "http://localhost:8000/" + a;
   }
 
   let val = "";
@@ -20,7 +20,7 @@
     users = sessionStorage.getItem("identifiant");
 
     const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/afficheUtilisateur/" + users
+      "http://localhost:8000/afficheUtilisateur/" + users
     );
 
     const data = await res.json();

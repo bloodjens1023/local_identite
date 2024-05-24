@@ -10,7 +10,7 @@
   import { Motion } from "svelte-motion";
   import ChargementKaratra from "./ChargementKaratra.svelte";
   function filter(a) {
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    return "http://localhost:8000/" + a;
   }
   let qrData = "Jenny Fandresena \n test";
   let qrCodeUrl = "";
@@ -34,9 +34,7 @@
 
     let co = [];
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/affiche_cni/" + id
-      );
+      const response = await fetch("http://localhost:8000/affiche_cni/" + id);
       const data = await response.json();
       co = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
       if (co.length > 0) {

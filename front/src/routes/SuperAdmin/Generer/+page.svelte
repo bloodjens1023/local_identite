@@ -46,7 +46,7 @@
     formdata.append("code", val);
 
     let response;
-    response = await fetch("https://bloodjens.pythonanywhere.com/api_code/", {
+    response = await fetch("http://localhost:8000/api_code/", {
       method: "POST",
       body: formdata,
     });
@@ -74,9 +74,7 @@
 
   let post = [];
   const getPosts = async () => {
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/api_codeVerif/"
-    );
+    const res = await fetch("http://localhost:8000/api_codeVerif/");
 
     const data = await res.json();
     const filter = data.data;

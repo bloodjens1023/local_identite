@@ -26,7 +26,7 @@
         goto("error");
       } else {
         const res = await fetch(
-          "https://bloodjens.pythonanywhere.com/afficheDocument/" + users
+          "http://localhost:8000/afficheDocument/" + users
         );
 
         const data = await res.json();

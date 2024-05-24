@@ -34,7 +34,7 @@
     loading = true;
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_inscriptionChef/",
+        "http://localhost:8000/api_inscriptionChef/",
         {
           method: "POST",
           headers: {
@@ -88,8 +88,7 @@
     arrondissements = [];
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/get_arrond_district_libre/" +
-          district
+        "http://localhost:8000/get_arrond_district_libre/" + district
       );
       const data = await response.json();
       arrondissements = data.data;
@@ -104,9 +103,7 @@
   async function fetchregion() {
     arrondissements = [];
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/get_region/"
-      );
+      const response = await fetch("http://localhost:8000/get_region/");
       const data = await response.json();
       regions = data.data;
       arrond = "";
@@ -122,7 +119,7 @@
     districts = [];
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/get_district/" + region
+        "http://localhost:8000/get_district/" + region
       );
       const data = await response.json();
       districts = data.data;
@@ -146,9 +143,7 @@
   let post = [];
   const getPosts = async () => {
     try {
-      const res = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_codeVerif/"
-      );
+      const res = await fetch("http://localhost:8000/api_codeVerif/");
 
       const data = await res.json();
       const filter = data.data;

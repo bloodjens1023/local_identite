@@ -30,16 +30,13 @@
   async function handleSubmit() {
     loading = true;
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_connexionChef/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const response = await fetch("http://localhost:8000/api_connexionChef/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await response.json();
       const message = data.message;

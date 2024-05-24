@@ -23,7 +23,7 @@
 
   const getPosts = async (user) => {
     const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/supprimerArrondissement/" + user
+      "http://localhost:8000/supprimerArrondissement/" + user
     );
 
     const data = await res.json();
@@ -51,7 +51,7 @@
   async function fetchUtilisateur() {
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/afficheArrondissement/"
+        "http://localhost:8000/afficheArrondissement/"
       );
       const data = await response.json();
       users = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
@@ -86,7 +86,7 @@
 
     let response;
     response = await fetch(
-      "https://bloodjens.pythonanywhere.com/api_insertion_arrondissement/",
+      "http://localhost:8000/api_insertion_arrondissement/",
       {
         method: "POST",
         body: formdata,
@@ -129,7 +129,7 @@
 
       let response;
       response = await fetch(
-        "https://bloodjens.pythonanywhere.com/updateArrondissement/" + ids,
+        "http://localhost:8000/updateArrondissement/" + ids,
         {
           method: "POST",
           body: formdata,
@@ -164,9 +164,7 @@
   };
   async function fetchregion() {
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/afficheDistrict/"
-      );
+      const response = await fetch("http://localhost:8000/afficheDistrict/");
       const data = await response.json();
       regions = data.data;
     } catch (error) {

@@ -8,13 +8,10 @@
     let formdata = new FormData();
     formdata.append("certificat", donne.certificat);
     let response;
-    response = await fetch(
-      "https://bloodjens.pythonanywhere.com/api_verif_certificat/",
-      {
-        method: "POST",
-        body: formdata,
-      }
-    );
+    response = await fetch("http://localhost:8000/api_verif_certificat/", {
+      method: "POST",
+      body: formdata,
+    });
     const data = await response.json();
     let users = data.data;
     console.log(users);
@@ -24,13 +21,10 @@
     let formdata = new FormData();
     formdata.append("photo", donne.photo);
     let response;
-    response = await fetch(
-      "https://bloodjens.pythonanywhere.com/api_verif_photo/",
-      {
-        method: "POST",
-        body: formdata,
-      }
-    );
+    response = await fetch("http://localhost:8000/api_verif_photo/", {
+      method: "POST",
+      body: formdata,
+    });
     const data = await response.json();
     let users = data.data;
     console.log(users);

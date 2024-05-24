@@ -56,7 +56,7 @@
     let id = anne;
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_stat_karatra_tous/" + id
+        "http://localhost:8000/api_stat_karatra_tous/" + id
       );
       const data = await response.json();
       const co = data.data;

@@ -31,8 +31,7 @@
     let id = anne;
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_stat_arrondissement_tous/" +
-          id
+        "http://localhost:8000/api_stat_arrondissement_tous/" + id
       );
       const data = await response.json();
       const co = data.data;
@@ -55,7 +54,7 @@
     arrondissements = [];
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/get_arrond_district/" + district
+        "http://localhost:8000/get_arrond_district/" + district
       );
       const data = await response.json();
       arrondissements = data.data;
@@ -71,9 +70,7 @@
     arrondissements = [];
 
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/get_region/"
-      );
+      const response = await fetch("http://localhost:8000/get_region/");
       const data = await response.json();
       regions = data.data;
       arrond = "";
@@ -89,7 +86,7 @@
     districts = [];
     try {
       const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/get_district/" + region
+        "http://localhost:8000/get_district/" + region
       );
       const data = await response.json();
       districts = data.data;

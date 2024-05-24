@@ -9,7 +9,7 @@
     return str.replace(/\d{3}(?=\d)/g, "$& ");
   }
   function filter(a) {
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    return "http://localhost:8000/" + a;
   }
   let showModal = false;
   let suppr = "";
@@ -24,9 +24,7 @@
   $: actuel = [];
 
   const getPosts = async (user) => {
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/supprimerDistrict/" + user
-    );
+    const res = await fetch("http://localhost:8000/supprimerDistrict/" + user);
 
     const data = await res.json();
     const filter = data;
@@ -44,9 +42,7 @@
   let filtrer = users;
   async function fetchUtilisateur() {
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/affiche_cni_tous/"
-      );
+      const response = await fetch("http://localhost:8000/affiche_cni_tous/");
       const data = await response.json();
       users = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
       filtrer = users;

@@ -23,9 +23,7 @@
   let filtre;
   const getPosts1 = async () => {
     try {
-      const res = await fetch(
-        "https://bloodjens.pythonanywhere.com/afficheRdv/" + user
-      );
+      const res = await fetch("http://localhost:8000/afficheRdv/" + user);
 
       const data = await res.json();
       filtre = data.data[0];

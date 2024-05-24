@@ -16,7 +16,7 @@
   let load_pub = false;
 
   function filter(a) {
-    return "https://bloodjens.pythonanywhere.com/" + a;
+    return "http://localhost:8000/" + a;
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,13 +26,10 @@
     formdata.append("description", description);
 
     let response;
-    response = await fetch(
-      "https://bloodjens.pythonanywhere.com/api_ajout_pub/",
-      {
-        method: "POST",
-        body: formdata,
-      }
-    );
+    response = await fetch("http://localhost:8000/api_ajout_pub/", {
+      method: "POST",
+      body: formdata,
+    });
 
     const data = await response.json();
     const message = data.message;
@@ -60,13 +57,10 @@
     formdata.append("description", description);
 
     let response;
-    response = await fetch(
-      "https://bloodjens.pythonanywhere.com/api_modif_pub/" + id,
-      {
-        method: "POST",
-        body: formdata,
-      }
-    );
+    response = await fetch("http://localhost:8000/api_modif_pub/" + id, {
+      method: "POST",
+      body: formdata,
+    });
 
     const data = await response.json();
     const message = data.message;
@@ -95,12 +89,9 @@
   };
 
   const getPosts = async (user) => {
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/api_delete_pub/" + user,
-      {
-        method: "POST",
-      }
-    );
+    const res = await fetch("http://localhost:8000/api_delete_pub/" + user, {
+      method: "POST",
+    });
 
     const data = await res.json();
     const filter = data;
@@ -121,9 +112,7 @@
   let filtrer = users;
   async function fetchUtilisateur() {
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_affiche_pub/"
-      );
+      const response = await fetch("http://localhost:8000/api_affiche_pub/");
       const data = await response.json();
       users = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
 

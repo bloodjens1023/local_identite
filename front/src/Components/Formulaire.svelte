@@ -41,21 +41,15 @@
     let response;
     if (update) {
       let use = sessionStorage.getItem("identifiant");
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/updateDocument/" + use,
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/updateDocument/" + use, {
+        method: "POST",
+        body: formdata,
+      });
     } else {
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_demande/",
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/api_demande/", {
+        method: "POST",
+        body: formdata,
+      });
     }
 
     const data = await response.json();
@@ -84,9 +78,7 @@
   const getPosts = async () => {
     users = sessionStorage.getItem("identifiant");
 
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/afficheDocument/" + users
-    );
+    const res = await fetch("http://localhost:8000/afficheDocument/" + users);
 
     const data = await res.json();
     const filter = data;
@@ -126,13 +118,10 @@
       let formdata = new FormData();
       formdata.append("certificat", donne.resid);
       let response;
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_verif_certificat/",
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/api_verif_certificat/", {
+        method: "POST",
+        body: formdata,
+      });
       const data = await response.json();
       let users = data.data;
       if (users) {
@@ -155,13 +144,10 @@
       let formdata = new FormData();
       formdata.append("photo", donne.photo);
       let response;
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_verif_photo/",
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/api_verif_photo/", {
+        method: "POST",
+        body: formdata,
+      });
       const data = await response.json();
       let users = data.data;
       if (users) {
@@ -185,13 +171,10 @@
       let formdata = new FormData();
       formdata.append("acte", donne.acte);
       let response;
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_verif_acte/",
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/api_verif_acte/", {
+        method: "POST",
+        body: formdata,
+      });
       const data = await response.json();
       let users = data.data;
       if (users) {

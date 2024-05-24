@@ -16,9 +16,7 @@
   $: actuel = [];
 
   const getPosts = async (user) => {
-    const res = await fetch(
-      "https://bloodjens.pythonanywhere.com/supprimerRegion/" + user
-    );
+    const res = await fetch("http://localhost:8000/supprimerRegion/" + user);
 
     const data = await res.json();
     const filter = data;
@@ -44,9 +42,7 @@
   let filtrer = users;
   async function fetchUtilisateur() {
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/get_region/"
-      );
+      const response = await fetch("http://localhost:8000/get_region/");
       const data = await response.json();
       users = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
       filtrer = users;
@@ -75,13 +71,10 @@
       formdata.append("code", codes);
 
       let response;
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_insertion_region/",
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/api_insertion_region/", {
+        method: "POST",
+        body: formdata,
+      });
 
       const data = await response.json();
       const message = data.message;
@@ -122,13 +115,10 @@
       formdata.append("code", codes);
 
       let response;
-      response = await fetch(
-        "https://bloodjens.pythonanywhere.com/updateRegion/" + ids,
-        {
-          method: "POST",
-          body: formdata,
-        }
-      );
+      response = await fetch("http://localhost:8000/updateRegion/" + ids, {
+        method: "POST",
+        body: formdata,
+      });
 
       const data = await response.json();
       const message = data.message;

@@ -1,28 +1,31 @@
 import smtplib
-import ssl
-from email.message import EmailMessage
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
-# Define email sender and receiver
-email_sender = 'bloodjens32@gmail.com'
-email_password = 'Jessy123@'
-email_receiver = 'hasiniainafanomezantsoa32@gmail.com'
+def envoie_email(destinataire, sujet, corp):
+    # Paramètres Gmail
+    email_sender = 'bloodjens32@gmail.com'
+  
+    email_receiver = destinataire
 
-# Set the subject and body of the email
-subject = 'Check out my new video!'
-body = """
-I've just published a new video on YouTube: https://youtu.be/2cZzP9DLlkg
-"""
+    # Création du message
+    message = MIMEMultipart()
+    message['From'] = email_sender
+    message['To'] = email_receiver
+    message['Subject'] = sujet
 
-em = EmailMessage()
-em['From'] = email_sender
-em['To'] = email_receiver
-em['Subject'] = subject
-em.set_content(body)
+    # Corps du message
+    body = corp
+    message.attach(MIMEText(body, 'html'))
 
-# Add SSL (layer of security)
-context = ssl.create_default_context()
+    # Connexion au serveur SMTP de Gmail
+    server = smtplib.SMTP('smtp.gmass.co', 25)
+    server.starttls()
+    server.login("gmass", "41fe8d90-f331-43c7-a07f-ed5f260c1eaa")
 
-# Log in and send the email
-with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
-    smtp.login(email_sender, email_password)
-    smtp.sendmail(email_sender, email_receiver, em.as_string())
+    # Envoi de l'e-mail
+    text = message.as_string()
+    server.sendmail(email_sender, email_receiver, text)
+
+    # Fermeture de la connexion
+    server.quit()

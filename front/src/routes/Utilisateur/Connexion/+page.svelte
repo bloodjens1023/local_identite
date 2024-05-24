@@ -21,16 +21,13 @@
   async function handleSubmit() {
     loading = true;
     try {
-      const response = await fetch(
-        "https://bloodjens.pythonanywhere.com/api_connexion/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ identifiant, password }),
-        }
-      );
+      const response = await fetch("http://localhost:8000/api_connexion/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ identifiant, password }),
+      });
 
       const data = await response.json();
       const message = data.message;
