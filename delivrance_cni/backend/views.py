@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 
 import datetime
 import math
@@ -10,8 +12,6 @@ from django.core.serializers import serialize
 from vonage import vonage
 from twilio.rest import Client
 import requests
-import os
-from dotenv import load_dotenv
 
 
 def get_document(request, user):
@@ -23,11 +23,11 @@ def get_document(request, user):
     nombre = 0
     for doc in docs:
         nombre+=1
-        return JsonResponse({'nombre': nombre})
-    
+
+
     for doc in docs:
-        if doc.archiver == False:
-            return JsonResponse({'nom':doc.nom,
+
+        return JsonResponse({'nom':doc.nom,
                              'prenom':doc.prenom,
                              'adresse':doc.adresse,
                              'numCni': doc.numCni,
@@ -38,21 +38,22 @@ def get_document(request, user):
                              'typeDocument':doc.typeDocument,
                              'etatDocument': doc.etatDocument,
                              'dateDebut': doc.dateDebut,
+                             'archiver':doc.archiver,
+
                              })
-        
+
     else:
         return JsonResponse({'donne':'aucun'})
-    
 
 
 
-    
+
 def get_user(request, user):
     try:
         users = Utilisateur.objects.get(identifiant = user )
     except:
         return JsonResponse({'donne':False})
-    
+
     if users is not None :
         return JsonResponse({'identifiant':users.identifiant,
                              'email':users.email,
@@ -63,126 +64,126 @@ def get_user(request, user):
                              })
     else:
         return JsonResponse({'donne':'aucun'})
-    
-    
-    
-    
-    
+
+
+
+
+
 def get_arrondissement(request):
     try:
         arrondissements = Arrondissement.objects.all().order_by("district")
         data = []
-   
+
         for arrondissement in arrondissements:
             if(arrondissement.nom != "tous"):
                 data.append({'id':arrondissement.id,'nom':arrondissement.nom, 'code':arrondissement.code,'district':arrondissement.district.nom,'district_id':arrondissement.district.id})
-           
-        
-        
+
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
-    
-    
-    
+
+
+
+
+
 
 
 def get_utilisateur_tout(request):
     try:
         user = Utilisateur.objects.all()
         data = []
-   
+
         for use in user:
             if(use.identifiant != "admin"):
                 data.append({'identifiant':use.identifiant, 'email':use.email, 'tel':use.tel})
-           
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
 def get_chef_tout(request):
     try:
         user = Chef.objects.all()
         data = []
-   
+
         for use in user:
-          
+
            data.append({'nom':use.nom,'prenom':use.prenom, 'email':use.email, 'tel':use.tel,'cni':use.numCni, 'dirige':use.arrondissementChef.nom,'district':use.arrondissementChef.district.nom,'region':use.arrondissementChef.district.region.nom})
-           
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
 
 
 def get_arrondissement_chef(request):
     try:
         arrondissements = Arrondissement.objects.filter(diriger="non")
         data = []
-   
+
         for arrondissement in arrondissements:
-        
+
             if(arrondissement.nom != "tous"):
                 data.append({'id':arrondissement.id,'nom':arrondissement.nom})
-           
-        
-        
+
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
+
+
 def get_chef(request,user):
     try:
         user = Chef.objects.filter(email = user)
         data = []
-   
+
         for use in user:
-          
+
            data.append({'nom':use.nom,'prenom':use.prenom, 'email':use.email, 'tel':use.tel,'cni':use.numCni, 'dirige':use.arrondissementChef.nom, "photo":str(use.photo), "password":use.password})
-           
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
 
 def delete_document(request, user):
     try:
-        
+
         users = Utilisateur.objects.get(identifiant = user )
     except:
         return JsonResponse({'donne':False})
-    
+
     doc = Document.objects.get(utilisateur=users)
     doc.delete()
     return JsonResponse({'donne':'supprimer avec succès'})
 
 def delete_arrondissements(request, user):
-    
+
     doc = Arrondissement.objects.get(id=user)
     doc.delete()
     return JsonResponse({'donne':'supprimer avec succès'})
 
 def delete_region(request, user):
-    
+
     doc = Region.objects.get(id=user)
     doc.delete()
     return JsonResponse({'donne':'supprimer avec succès'})
 
 def delete_district(request, user):
-    
+
     doc = District.objects.get(id=user)
     doc.delete()
     return JsonResponse({'donne':'supprimer avec succès'})
@@ -200,7 +201,7 @@ def update_arrondissements(request, user):
 
 @api_view(["POST"])
 def update_regions(request, user):
-    
+
     doc = Region.objects.get(id=user)
     doc.nom = request.POST.get('nom')
     doc.code = request.POST.get('code')
@@ -209,7 +210,7 @@ def update_regions(request, user):
 
 @api_view(["POST"])
 def update_district(request, user):
-    region = Region.objects.get(id=request.POST.get('region'))    
+    region = Region.objects.get(id=request.POST.get('region'))
     doc = District.objects.get(id=user)
     doc.nom = request.POST.get('nom')
     doc.code = request.POST.get('code')
@@ -219,11 +220,11 @@ def update_district(request, user):
 
 def delete_utilisateur(request, user):
     try:
-        
+
         users = Utilisateur.objects.get(identifiant = user )
     except:
         return JsonResponse({'donne':False})
-    
+
     users.delete()
     return JsonResponse({'donne':'supprimer avec succès'})
 
@@ -236,7 +237,7 @@ def delete_chef(request, user):
         arrond.save()
     except:
         return JsonResponse({'donne':False})
-    
+
     chef.delete()
     return JsonResponse({'donne':'supprimer avec succès'})
 
@@ -248,11 +249,11 @@ def delete_chef(request, user):
 def update_document(request, user):
     try:
         users = Utilisateur.objects.get(identifiant = user )
-        doc = Document.objects.get(utilisateur=users)    
-     
-       
+        doc = Document.objects.get(utilisateur=users)
+
+
         if request.POST.get('type') == "primata":
-            
+
             doc.nom = request.POST.get('nom')
             doc.prenom = request.POST.get('prenom')
             doc.adresse = request.POST.get('adresse')
@@ -264,11 +265,11 @@ def update_document(request, user):
             doc.typeDocument = request.POST.get('type')
             doc.utilisateur = users
             doc.dateDebut = datetime.datetime.now()
-            
-            doc.save()            
+
+            doc.save()
             return JsonResponse({'message': True,'info':"Pas d'erreur"})
         elif request.data["type"] == "duplicatatUse":
-         
+
             doc.nom = request.POST.get('nom'),
             doc.prenom = request.POST.get('prenom')
             doc.adresse = request.POST.get('adresse')
@@ -280,11 +281,11 @@ def update_document(request, user):
             doc.acteNaissance = ""
             doc.dateDebut = datetime.datetime.now()
             doc.utilisateur = users
-            
-            doc.save()        
+
+            doc.save()
             return JsonResponse({'message': True,'info':"Pas d'erreur"})
         elif request.data["type"] == "duplicatatPerte":
-           
+
             doc.nom = request.POST.get('nom')
             doc.prenom = request.POST.get('prenom')
             doc.adresse = request.POST.get('adresse')
@@ -311,13 +312,13 @@ def update_document(request, user):
 @api_view(['POST'])
 def update_utilisateur(request, user):
     reponse = False
-    
+
     prefixes = ["033", "034", "038","032"]
     numero = str(request.data["tel"])
     request.user = request.data
-        
+
     for prefixe in prefixes:
-               
+
                 if numero.startswith(prefixe):
                     reponse =  True
                     break
@@ -326,33 +327,33 @@ def update_utilisateur(request, user):
     if reponse:
                 try:
                     users = Utilisateur.objects.get(identifiant = user )
-                    
+
                     if(request.POST.get('photo') != ""):
                         users.photo = request.FILES['photo']
                     users.tel = request.POST.get('tel')
                     users.email = request.POST.get('email')
                     if(request.POST.get('password') != ""):
-                        users.password = make_password(request.POST.get('password'))     
-                    users.save()       
+                        users.password = make_password(request.POST.get('password'))
+                    users.save()
                     return JsonResponse({'message': True,'info':"Pas d'erreur"})
                 except:
-                  
+
                     return JsonResponse({'message':False,'info':"Un erreur s'est survenue"})
-                 
+
     else:
                 return JsonResponse({'message': False,'info':"Numero pas pris en charge"})
-        
-    
+
+
 @api_view(['POST'])
 def update_chef(request, user):
     reponse = False
-    
+
     prefixes = ["033", "034", "038","032"]
     numero = str(request.data["tel"])
     request.user = request.data
-        
+
     for prefixe in prefixes:
-               
+
                 if numero.startswith(prefixe):
                     reponse =  True
                     break
@@ -361,7 +362,7 @@ def update_chef(request, user):
     if reponse:
                 try:
                     users = Chef.objects.get(email = user )
-                    
+
                     if(request.POST.get('photo') != ""):
                         users.photo = request.FILES['photo']
                     users.nom = request.POST.get('nom')
@@ -370,16 +371,16 @@ def update_chef(request, user):
                     users.tel = request.POST.get('tel')
                     users.email = request.POST.get('email')
                     if(request.POST.get('password') != ""):
-                        users.password = make_password(request.POST.get('password'))     
-                    users.save()       
+                        users.password = make_password(request.POST.get('password'))
+                    users.save()
                     return JsonResponse({'message': True,'info':"Pas d'erreur"})
                 except:
-                  
+
                     return JsonResponse({'message':False,'info':"Un erreur s'est survenue"})
-                 
+
     else:
                 return JsonResponse({'message': False,'info':"Numero pas pris en charge"})
- 
+
 
 
 def index(request):
@@ -400,7 +401,7 @@ def connexion(request):
 
 
 @api_view(['POST'])
-def insertion_verif(request):   
+def insertion_verif(request):
     try:
         verif = Verif.objects.get()
         verif.contenu = request.data["code"]
@@ -410,22 +411,22 @@ def insertion_verif(request):
         verif = Verif(contenu = request.data["code"])
         verif.save()
         return JsonResponse({'message': True,'info':'Connexion réussite'})
-    
+
 
 def get_verif(request):
     try:
         verif = Verif.objects.all()
         data = []
-   
+
         for verifs in verif:
-            
+
             data.append({'code':verifs.contenu})
-            
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-        
-        
+
+
 
 
 
@@ -435,15 +436,15 @@ def inscription(request):
     try:
         if(str(request.data["identifiant"]).isspace() or str(request.data["identifiant"]).isidentifier() == False):
             return JsonResponse({'message': False,'info':"Erreur de l'identifiant"})
-        
+
         if(str(request.data["email"]).__contains__("@gmail.com") == False):
              return JsonResponse({'message': False,'info':"Erreur de l'email"})
-         
+
         if(len(request.data["password"])<12):
-            return JsonResponse({'message': False,'info':"Mots de passe trops faible"})     
+            return JsonResponse({'message': False,'info':"Mots de passe trops faible"})
         elif(str(request.data["password"]).isspace()):
             return JsonResponse({'message': False,'info':"Mots de passe impossible"})
-         
+
         reponse = False
         arrond = Arrondissement.objects.get(id = request.data["arrond"])
         prefixes = ["033", "034", "038","032"]
@@ -452,7 +453,7 @@ def inscription(request):
         if not Utilisateur.objects.filter(email = request.data["email"]).exists():
             if not Utilisateur.objects.filter(identifiant = request.data["identifiant"]).exists():
                 for prefixe in prefixes:
-                
+
                     if numero.startswith(prefixe):
                         reponse =  True
                         break
@@ -470,16 +471,17 @@ def inscription(request):
         else:
             return JsonResponse({'message': False,'info':'email déja utilisée'})
     except:
-        return JsonResponse({'message': False,'info':"Erreur de remplissage de donnée"})  
-    
+        return JsonResponse({'message': False,'info':"Erreur de remplissage de donnée"})
+
 @api_view(['POST'])
 def envoieDemande(request):
-
-    
     user = Utilisateur.objects.get(identifiant = request.POST.get("identifiant"))
+
     if(str(request.POST.get('nom')).isspace() or str(request.POST.get('prenom')).isspace() or str(request.POST.get('adresse')).isspace()):
         return JsonResponse({'message': False,'info':"Erreur de l'identifiant"})
-    
+
+
+
     if request.POST.get('type') == "primata":
         serializer = Document(nom = request.POST.get('nom'),
                                prenom = request.POST.get('prenom'),
@@ -524,24 +526,24 @@ def envoieDemande(request):
         return JsonResponse({'message': True,'info':"Pas d'erreur"})
     else:
         return JsonResponse({'message': False,'info':"Un erreur s'est survenue"})
-     
-    
+
+
 
 @api_view(['POST'])
 def inscription_chef(request):
     try:
-        if(str(request.data["nom"]).isspace() or 
+        if(str(request.data["nom"]).isspace() or
            str(request.data["prenom"]).isspace() == ""
             or str(request.data["numCni"]).isspace() == ""):
              return JsonResponse({'message': False,'info':"Erreur de replissage du formulaire"})
-             
-            
+
+
         if(len(request.data["password"])<12):
-            return JsonResponse({'message': False,'info':"Mots de passe trops faible"})     
+            return JsonResponse({'message': False,'info':"Mots de passe trops faible"})
         elif(str(request.data["password"]).isspace()):
-            return JsonResponse({'message': False,'info':"Mots de passe impossible"}) 
-        
-                                  
+            return JsonResponse({'message': False,'info':"Mots de passe impossible"})
+
+
         reponse = False
         arrond = Arrondissement.objects.get(id = request.data["arrond"])
         arrond.diriger = "oui"
@@ -550,9 +552,9 @@ def inscription_chef(request):
         numero = str(request.data["tel"])
         request.user = request.data
         if not Chef.objects.filter(email = request.data["email"]).exists():
-            
+
                 for prefixe in prefixes:
-                
+
                     if numero.startswith(prefixe):
                         reponse =  True
                         break
@@ -563,9 +565,9 @@ def inscription_chef(request):
                                     prenom = request.data["prenom"],
                                     email = request.data["email"],
                                     numCni = request.data["numCni"],
-                                    tel = request.data["tel"], 
+                                    tel = request.data["tel"],
                                     password = request.data["password"],
-                                    
+
                                     arrondissementChef = arrond)
                     serializer.set_mot_de_passe(serializer.password)
                     serializer.save()
@@ -588,8 +590,8 @@ def connexion_chef(request):
         return JsonResponse({'message': True,'info':'Connexion réussite'})
     else:
         return JsonResponse({'message': False,'info':'Erreur connexion'})
-    
-    
+
+
 @api_view(["POST"])
 def ajout_arrondissement(request):
     try:
@@ -626,7 +628,7 @@ def ajout_pub(request):
     try:
         dems = Utilisateur.objects.all()
         for dem in dems:
-            notif = Notification(utilisateur = dem, 
+            notif = Notification(utilisateur = dem,
                                  description = "vous avez reçu une nouvelle actualité de la part de l'administrateur",
                                  lien = "/Utilisateur/Attente",
                                  )
@@ -634,7 +636,7 @@ def ajout_pub(request):
         if(request.POST.get('photo') == ""):
             pub = Publication(description = request.POST.get("description"))
             pub.save()
-            
+
             return JsonResponse({'message': True,'info':'publication inserer avec success'})
         else:
             pub = Publication(photo = request.FILES['photo'],description = request.POST.get("description"))
@@ -651,21 +653,21 @@ def delete_pub(request,id):
         return JsonResponse({'message': True,'info':'publication inserer avec success'})
     except:
         return JsonResponse({'message': False,'info':"Erreur de l'insertion de la publication"})
-    
+
 
 def get_pub_tout(request):
     try:
         pub = Publication.objects.all()
         data = []
-   
+
         for pubs in pub:
             data.append({'id':pubs.id,'photo':str(pubs.photo),'description':pubs.description, 'aimer':pubs.aimer })
-           
-            
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
+
 
 @api_view(["POST"])
 def modif_pub(request,id):
@@ -688,17 +690,17 @@ def get_pub_simple(request,id):
     try:
         pub = Publication.objects.filter(id = id)
         data = []
-   
+
         for pubs in pub:
             data.append({'id':pubs.id,'photo':str(pubs.photo),'description':pubs.description, 'aimer':pubs.aimer })
-           
-            
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
-    
+
+
+
 # Réaction
 
 @api_view(["POST"])
@@ -727,7 +729,7 @@ def ajout_reaction(request):
         pub.aimer +=1
         pub.save()
         return JsonResponse({'message': True,'info':"creation de pub"})
-    
+
 
 
 # COmmentaire
@@ -743,19 +745,19 @@ def ajout_commentaire(request,id):
     except:
 
         return JsonResponse({'message': True,'info':"creation de pub"})
-    
-    
+
+
 
 def get_commentaire_simple(request,ids):
     try:
         pub = Publication.objects.get(id =ids)
         com = Commentaire.objects.filter(publication = pub)
         data = []
-   
+
         for coms in com:
             data.append({'utilisateur':coms.utilisateur.identifiant,'contenu':coms.contenue })
-           
-            
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
@@ -767,48 +769,48 @@ def get_notification_simple(request,id):
         user = Utilisateur.objects.get(identifiant = id)
         notification = Notification.objects.filter(utilisateur = user)
         data = []
-   
+
         for pubs in notification:
             data.append({'id': pubs.id, 'description':pubs.description, 'date': pubs.date, 'lue':pubs.lue, "lien":pubs.lien})
-           
-            
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
+
+
 def get_notification_non_lue(request,id):
     try:
         user = Utilisateur.objects.get(identifiant = id)
         notification = Notification.objects.filter(utilisateur = user,  lue = False)
         data = []
-   
+
         for pubs in notification:
             data.append({'id': pubs.id, 'description':pubs.description, 'date': pubs.date, 'lue':pubs.lue})
-           
-            
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
+
 
 def set_notification_lue(request,id):
     try:
         user = Utilisateur.objects.get(identifiant = id)
         notification = Notification.objects.filter(utilisateur = user,  lue = False)
         data = []
-   
+
         for pubs in notification:
             pubs.lue = True
             pubs.save()
-        
+
         data.append({"resultat": "oui"})
-           
-            
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
+
 
 # selection demande par arrondissement
 
@@ -835,14 +837,14 @@ def get_demande_arrondissement(request,id):
                                "typeDocument": dem.typeDocument,
                                "utilisateur" : dem.utilisateur.identifiant,
                                "date": dem.dateDebut
-                               
+
                                })
-           
-            
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
+
 @api_view(["POST"])
 def refuser_demande_arrondissement(request,id):
     temps = request.POST.get("motif")
@@ -852,8 +854,8 @@ def refuser_demande_arrondissement(request,id):
 
         for dem in demande:
             dem.etatDocument = "refuser"
-            dem.save() 
-            notif = Notification(utilisateur = dem.utilisateur, 
+            dem.save()
+            notif = Notification(utilisateur = dem.utilisateur,
                                  description = "vous avez reçu la réponse de votre demande de délivrance de votre CNI",
                                  lien = "/Utilisateur/XDemande",
                                  )
@@ -894,10 +896,10 @@ def refuser_demande_arrondissement(request,id):
                             <p style="font-size: 1.3em;">🔷 Bonjour <span style="font-weight: bold;">{} {}</span> portant le numero CNI {}</p>
                             <p style="font-size: 1.3em;">Nous regrettons de vous informer que votre demande de carte nationale d'identité le <span style="font-weight: bold;">{}</span> a été refusée.</p>
                             <p style="font-size: 1.3em;">Plusieur raison nous a pousser a le refuser qui sont : <span style="font-weight: bold;">{}</span></p>
-                            
+
                             <p style="font-size: 1.3em;">Cordiallement.</p>
                             <center><p style="font-size: 1.3em;">Ministère de l'intérieur</p></center>
-                            
+
                         </body>
                     </html>
                 """.format(dem.nom,  dem.prenom, dem.numCni, dem.dateDebut, temps)
@@ -911,16 +913,16 @@ def refuser_demande_arrondissement(request,id):
                             <p style="font-size: 1.3em;">🔷 Bonjour <span style="font-weight: bold;">{} {}</span> portant le numero CNI {}</p>
                             <p style="font-size: 1.3em;">Nous regrettons de vous informer que votre demande de carte nationale d'identité le <span style="font-weight: bold;">{}</span> a été refusée.</p>
                             <p style="font-size: 1.3em;">Plusieur raison nous a pousser a le refuser qui sont : <span style="font-weight: bold;">{}</span></p>
-                            
+
                             <p style="font-size: 1.3em;">Cordiallement.</p>
                             <center><p style="font-size: 1.3em;">Ministère de l'intérieur</p></center>
                         </body>
                     </html>
                 """.format(dem.nom, dem.prenom,dem.numCni, dem.dateDebut, temps)
-                
+
             envoie_email(dem.utilisateur.email,"Démande de delivrance de CNI",contenue)
-           
-            
+
+
         return JsonResponse({'data': data})
     except:
         return JsonResponse({'data': False})
@@ -933,22 +935,22 @@ def accepter_demande_arrondissement(request,id):
     codes = request.POST.get("code")
     try:
         demande = Document.objects.filter(id = id)
-        
+
         data = []
 
         for dem in demande:
             rendevou = Rendezvou(document = dem, date_fin = dats, heure = temps,code = codes)
             rendevou.save()
-            
+
             # dem.utilisateur.arrondissement.district.region :
-            
-            notif = Notification(utilisateur = dem.utilisateur, 
+
+            notif = Notification(utilisateur = dem.utilisateur,
                                  description = "vous avez reçu la réponse de votre demande de délivrance de votre CNI",
                                  lien = "/Utilisateur/XDemande",
                                  )
             notif.save()
             dem.etatDocument = "accepter"
-            dem.save() 
+            dem.save()
             account_sid = os.getenv('TWILIO_ACCOUNT_SID')
             auth_token = os.getenv('TWILIO_AUTH_TOKEN')
             client = Client(account_sid, auth_token)
@@ -958,7 +960,7 @@ def accepter_demande_arrondissement(request,id):
             body=' Bonjour {} {}, nous sommes ravit de informer que votre demande de carte National d\'identité a été approuvé rendez-vous le {} à {} afin de valider et recuperer votre CNI.'.format(dem.nom, dem.prenom, dats, temps),
             to='+261320410659'
             )
-            
+
             contenue = ""
             if(dem.typeDocument == "primata"):
                 contenue = """
@@ -1007,17 +1009,17 @@ def accepter_demande_arrondissement(request,id):
                         </body>
                     </html>
                 """.format(dem.nom, dem.prenom,dem.numCni, dem.dateDebut, dats, temps)
-                
-            envoie_email(dem.utilisateur.email,"Démande de delivrance de CNI",contenue) 
-            
-           
-            
-            
+
+            envoie_email(dem.utilisateur.email,"Démande de delivrance de CNI",contenue)
+
+
+
+
         return JsonResponse({'data': data})
     except:
         return JsonResponse({'data': False})
-    
-    
+
+
 def stat_arrondissement_chef(request,id):
     try:
         chef = Chef.objects.get(email=id)
@@ -1027,7 +1029,7 @@ def stat_arrondissement_chef(request,id):
         accepter = 0
         refuser = 0
         data = []
-   
+
         for pubs in doc:
             if(chef.arrondissementChef == pubs.utilisateur.arrondissement):
                 if(pubs.etatDocument == "encours"):
@@ -1036,14 +1038,14 @@ def stat_arrondissement_chef(request,id):
                     refuser+=1
                 elif(pubs.etatDocument == "accepter"):
                     accepter+=1
-        
-        
-        data.append({"encour": encour, "refuser": refuser, "accepter": accepter})   
-            
+
+
+        data.append({"encour": encour, "refuser": refuser, "accepter": accepter})
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
+
 
 def stat_arrondissement_tous(request,id):
     try:
@@ -1053,8 +1055,8 @@ def stat_arrondissement_tous(request,id):
         accepter = 0
         refuser = 0
         data = []
-   
-        
+
+
 
         for pubs in doc:
                 if(arrond == pubs.utilisateur.arrondissement):
@@ -1064,24 +1066,24 @@ def stat_arrondissement_tous(request,id):
                         refuser+=1
                     elif(pubs.etatDocument == "accepter"):
                         accepter+=1
-                            
-            
-        data.append({"encour": encour, "refuser": refuser, "accepter": accepter})   
-            
+
+
+        data.append({"encour": encour, "refuser": refuser, "accepter": accepter})
+
         encour = 0
         accepter = 0
         refuser = 0
-            
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
+
+
 
 def stat_utilisateur_tous(request):
     try:
         users = Utilisateur.objects.all()
-    
+
         data = []
         for user in users:
             data.append({'identifiant': user.identifiant, })
@@ -1103,20 +1105,20 @@ def stat_utilisateur_arrond(request,id, anne):
         nombre = 0
         i = 1
         for mois in noms_mois:
-            
-            for user in users: 
+
+            for user in users:
                 if(chef.arrondissementChef == user.arrondissement and user.date_inscription.month == (i) and user.date_inscription.year == anne):
                     nombre += 1
-             
+
                 print(user.date_inscription.year)
             data.append({mois: nombre, })
             nombre = 0
             i+=1
-            
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data':False})
-    
+
 def stat_utilisateur_arrond_tous(request, anne):
     noms_mois = [
     "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin",
@@ -1124,25 +1126,25 @@ def stat_utilisateur_arrond_tous(request, anne):
 ]
     try:
         users = Utilisateur.objects.all()
-      
+
         data = []
         nombre = 0
         i = 1
         for mois in noms_mois:
-            
-            for user in users: 
-                if(user.date_inscription.month == (i) and user.date_inscription.year == anne):
+
+            for user in users:
+                if(user.date_inscription.month == (i) and user.date_inscription.year == anne and user.identifiant !="admin"):
                     nombre += 1
-             
+
 
             data.append({mois: nombre, })
             nombre = 0
             i+=1
-            
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data':False})
-    
+
 
 
 def get_rdv(request,id):
@@ -1158,14 +1160,14 @@ def get_rdv(request,id):
                                "code" : dem.code,
                                "heure" : dem.heure,
                                "recuperer" : dem.recuperer,
-                            
+
                                })
-           
-            
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
+
 
 def get_rdv_tous(request):
     try:
@@ -1184,14 +1186,14 @@ def get_rdv_tous(request):
                                "adresse" : dem.document.adresse,
                                "type_document" : dem.document.typeDocument,
                                "photo" : str(dem.document.photo),
-                            
+
                                })
-           
-            
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
+
 
 def update_rdv(request,id):
     try:
@@ -1199,13 +1201,13 @@ def update_rdv(request,id):
         doc = Document.objects.get(id = rsv.document.id)
         rsv.recuperer = True
         rsv.save()
-        
+
         doc.archiver = True
-        doc.save()        
+        doc.save()
         return JsonResponse({'data': True})
     except:
         return JsonResponse({'data': False})
-    
+
 
 @api_view(["POST"])
 def ajouter_retour(request,id):
@@ -1227,7 +1229,7 @@ def voir_retour(request):
         cinq = 0
         total = 0
         data = []
-   
+
         for rets in retour:
             if rets.note == 1:
                un += 1
@@ -1239,34 +1241,34 @@ def voir_retour(request):
                quatre += 1
             elif rets.note == 5:
                cinq += 1
-            
+
             total += 1
-        
+
         un = math.floor((un*100)/total)
         deux = math.floor((deux*100)/total)
         troi = math.floor((troi*100)/total)
         quatre = math.floor((quatre*100)/total)
         cinq = math.floor((cinq*100)/total)
         total = 100
-        
-        data.append({"un": un, "deux": deux, "trois": troi, "cinq":cinq, "quatre":quatre, "total":total})   
-            
+
+        data.append({"un": un, "deux": deux, "trois": troi, "cinq":cinq, "quatre":quatre, "total":total})
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
+
 
 def get_region(request):
     try:
         region = Region.objects.all().order_by('nom')
         data = []
-        
+
         for region in region:
             if(region.nom != "tous"):
                 data.append({'id':region.id,'nom':region.nom, 'code':region.code})
-           
-        
-        
+
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
@@ -1277,51 +1279,51 @@ def get_district(request,id):
         district = District.objects.all()
         region = Region.objects.get(id = id)
         data = []
-        
+
         for district in district:
             if(district.nom != "tous" and district.region == region):
                 data.append({'id':district.id,'nom':district.nom, 'code':district.code, 'region': district.region.nom})
-           
-        
-        
+
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
+
+
 def get_district_all(request):
     try:
         district = District.objects.all().order_by('region').order_by("nom")
         data = []
-        
+
         for district in district:
             if(district.nom != "tous"):
                 data.append({'id':district.id,'nom':district.nom, 'code':district.code, 'region': district.region.nom,'region_id': district.region.id})
-           
-        
-        
+
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
+
+
 
 def get_arrondissement_par_district(request,id):
     try:
         arrondissements = Arrondissement.objects.all()
         district = District.objects.get(id = id)
         data = []
-   
+
         for arrondissement in arrondissements:
             if(arrondissement.nom != "tous" and arrondissement.district == district):
                 data.append({'id':arrondissement.id,'nom':arrondissement.nom, 'code':arrondissement.code,'district':arrondissement.district.nom})
-           
-        
-        
+
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
+
 
 
 def get_arrondissement_par_district_libre(request,id):
@@ -1329,36 +1331,39 @@ def get_arrondissement_par_district_libre(request,id):
         arrondissements = Arrondissement.objects.all()
         district = District.objects.get(id = id)
         data = []
-   
+
         for arrondissement in arrondissements:
             if(arrondissement.nom != "tous" and arrondissement.district == district and arrondissement.diriger == "non"):
                 data.append({'id':arrondissement.id,'nom':arrondissement.nom, 'code':arrondissement.code,'district':arrondissement.district.nom})
-           
-        
-        
+
+
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
-    
-    
+
+
 def get_uploaded_file_url(request):
     # Supposons que vous avez un modèle UploadedFile avec un champ 'file'
     # qui stocke le chemin du fichier téléchargé.
     uploaded_file = Utilisateur.objects.first()  # Récupère le dernier fichier téléchargé
     r = []
     if uploaded_file:
-        
-            
+
+
         return JsonResponse({'file_url': str(uploaded_file.photo)})
     else:
         return JsonResponse({'error': 'No uploaded file found'}, status=404)
-    
 
+
+
+
+@api_view(["POST"])
 def gestionKaratra(request,id):
     doc = Document.objects.filter(id = id)
-    
+
     karatra = Karatra.objects.all()
-    
+
     if(len(karatra) == 0):
          for docs in doc:
                 r = str(docs.utilisateur.arrondissement.district.region.code)+str(docs.utilisateur.arrondissement.district.code)+str(docs.utilisateur.arrondissement.code)
@@ -1389,6 +1394,7 @@ def gestionKaratra(request,id):
                     kart.save()
                     return JsonResponse({"data":"pas de carte existant"})
 
+
 def affiche_karatra(request, id):
     user = Utilisateur.objects.get(identifiant=id)
     kart = Karatra.objects.all()
@@ -1397,7 +1403,7 @@ def affiche_karatra(request, id):
         if(karts.document.utilisateur == user and karts.document.archiver == True):
             dat.append({'photo':str(karts.document.photo),'nom':karts.document.nom,'prenom':karts.document.prenom,'numCNI': karts.numero,'adresse':karts.document.adresse, 'date':karts.date})
             return JsonResponse({'data': dat})
-    
+
     return JsonResponse({'data':'aucun'})
 
 
@@ -1405,62 +1411,64 @@ def affiche_karatra_tous(request):
     try:
         kart = Karatra.objects.all()
         dat = []
-        for karts in kart:  
+        for karts in kart:
             dat.append({'photo':str(karts.document.photo),'nom':karts.document.nom,'prenom':karts.document.prenom,'numCNI': karts.numero,'adresse':karts.document.adresse, 'date':karts.date})
-                
-        
+
+
         return JsonResponse({'data': dat})
     except:
         return JsonResponse({'data': 'false'})
-    
-    
-    
-        
-    
+
+
 def stat_karatra (request,anne):
     noms_mois = [
     "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin",
     "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"
-]
+    ]
     try:
         users = Karatra.objects.all()
-      
+
         data = []
         nombre = 0
         i = 1
         for mois in noms_mois:
-            
-            for user in users: 
+
+            for user in users:
                 if(user.date.month == (i) and user.date.year == anne):
                     nombre += 1
-             
+
 
             data.append({mois: nombre, })
             nombre = 0
             i+=1
-            
+
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data':False})
-    
+
+
+# api verification des documents
 @api_view(["POST"])
 def verifier_certificat(request):
-    api_key = 'acc_e201826d4119173'
-    api_secret = '5aec3dbd2376f2f590ac3f7f3e3df044'
-    image_file = request.FILES['certificat']
+    try:
+        api_key = 'acc_e201826d4119173'
+        api_secret = '5aec3dbd2376f2f590ac3f7f3e3df044'
+        image_file = request.FILES['certificat']
 
-    response = requests.post(
-        'https://api.imagga.com/v2/text',
-        auth=(api_key, api_secret),
-        files={'image': image_file})
+        response = requests.post(
+            'https://api.imagga.com/v2/text',
+            auth=(api_key, api_secret),
+            files={'image': image_file})
 
-    r = response.json().get('result', {}).get('text', [])
+        r = response.json().get('result', {}).get('text', [])
 
-    for j in r:
-        if str(j["data"]).lower() == "certificat de residence":
-            return JsonResponse({'data': True})
-    
-    return JsonResponse({'data': False})
+        for j in r:
+            if str(j["data"]).lower().__contains__("certificat de residence"):
+                return JsonResponse({'data': True})
+
+        return JsonResponse({'data': False})
+    except:
+        return JsonResponse({'data': False})
 
 @api_view(["POST"])
 def verifier_acte(request):
@@ -1477,9 +1485,9 @@ def verifier_acte(request):
         r = response.json().get('result', {}).get('text', [])
 
         for j in r:
-            if str(j["data"]).lower() == "acte de naissance":
+            if str(j["data"]).lower().__contains__("acte de naissance"):
                 return JsonResponse({'data': True})
-        
+
         return JsonResponse({'data': False})
     except:
         return JsonResponse({'data': False})
@@ -1501,7 +1509,7 @@ def verifier_perte(request):
         for j in r:
             if str(j["data"]).lower() == "declaration de perte":
                 return JsonResponse({'data': True})
-    
+
         return JsonResponse({'data': False})
     except:
         return JsonResponse({'data': False})
@@ -1527,6 +1535,3 @@ def verifier_photo(request):
         return JsonResponse({'data': False})
     except:
         return JsonResponse({'data': False})
-
-
-        
