@@ -25,6 +25,10 @@
     }
   }
 
+  setInterval(() => {
+    fetchUtilisateur();
+  }, 100);
+
   function filter(a) {
     return "http://localhost:8000/" + a;
   }
@@ -66,7 +70,8 @@
       <div
         style="height: 50vh; display: flex; align-items: center; justify-content: center;"
       >
-        <Chargement />
+        <!-- <Chargement /> -->
+        <h1>Aucun publication</h1>
       </div>
     {/if}
   </div>

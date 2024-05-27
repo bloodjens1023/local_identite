@@ -27,8 +27,6 @@
   let arrond = 1;
   let region = 1;
   let district = 1;
-  let success = false;
-  let error = false;
   let loading = false;
 
   async function handleSubmit() {

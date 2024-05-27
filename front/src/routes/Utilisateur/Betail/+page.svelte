@@ -37,11 +37,14 @@
   onMount(() => {
     let u = sessionStorage.getItem("pub_id");
     fetchComm(u);
-    console.log(co);
   });
+  setInterval(() => {
+    let u = sessionStorage.getItem("pub_id");
+    fetchComm(u);
+  }, 500);
 </script>
 
-<div>
+<div style="background-color: #E9EBEE;">
   <HeaderAttente acc="active" />
   <br /><br /><br />
   <div
