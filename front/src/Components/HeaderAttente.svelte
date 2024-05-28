@@ -1,16 +1,35 @@
 <script>
-  import { goto } from "$app/navigation";
+  // @ts-nocheck
+
   import logo from "$lib/logos.png";
   import { onDestroy, onMount } from "svelte";
-  import { Motion } from "svelte-motion";
+  import Avatar from "./Avatar.svelte";
   export let acc = "";
   export let dem = "";
   export let men = "";
   export let notif = "";
   export let virt = "";
+  let id = sessionStorage.getItem("identifiant");
   let count = 0;
+  function filter(a) {
+    return "http://localhost:8000/" + a;
+  }
+  async function selectUtilisateur() {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/afficheUtilisateur/" + id
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      toast.error("Erreur de serveur", {
+        style: "font-size:15px; padding:10px",
+        duration: 2000,
+      });
+    }
+  }
   async function fetchNotif() {
-    let id = sessionStorage.getItem("identifiant");
+    id = sessionStorage.getItem("identifiant");
 
     let co = [];
     try {
@@ -25,7 +44,7 @@
     }
   }
   async function toutlue() {
-    let id = sessionStorage.getItem("identifiant");
+    id = sessionStorage.getItem("identifiant");
 
     let co = [];
     try {
@@ -99,6 +118,29 @@
           <a class="nav-link {men}" href="/Utilisateur/Menu">Menu</a>
         </li>
       </ul>
+    </div>
+    <div>
+      {#await selectUtilisateur()}
+        <a href="/Utilisateur/Menu"
+          ><Avatar width="50" round={true} userFullName={id} /></a
+        >
+      {:then data}
+        {#if data["photo"] == ""}
+          <a href="/Utilisateur/Menu"
+            ><Avatar width="50" round={true} userFullName={id} /></a
+          >
+        {/if}
+        {#if data["photo"] != ""}
+          <a href="/Utilisateur/Menu"
+            ><Avatar
+              width="50"
+              
+              round={true}
+              src={filter(data["photo"])}
+            /></a
+          >
+        {/if}
+      {/await}
     </div>
   </div>
 </nav>

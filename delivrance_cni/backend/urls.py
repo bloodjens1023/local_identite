@@ -99,8 +99,7 @@ urlpatterns = [
     path("ajouter_retour/<str:id>", views.ajouter_retour),
     path("voir_retour/", views.voir_retour),
     
-    
-    #region et district 
+   
     path("get_district/<str:id>", views.get_district),
     path("get_region/", views.get_region),
     path("get_arrond_district/<str:id>", views.get_arrondissement_par_district),

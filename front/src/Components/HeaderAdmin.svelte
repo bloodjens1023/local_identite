@@ -1,4 +1,7 @@
 <script>
+  // @ts-nocheck
+  import Avatar from "./Avatar.svelte";
+
   import logo from "$lib/logos.png";
   import { Motion } from "svelte-motion";
   export let inscrit = false;
@@ -61,6 +64,7 @@
         </Motion>
       {/if}
     </div>
+    
   </div>
 </nav>
 

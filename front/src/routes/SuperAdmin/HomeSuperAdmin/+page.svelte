@@ -96,7 +96,7 @@
       <div class="stat">
         <div class="titre">
           <div>
-            <h1>Statistique</h1>
+            <h1>Statistique des utilisateurs inscrit par mois</h1>
           </div>
         </div>
         <br />

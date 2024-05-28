@@ -126,7 +126,9 @@
         <div class="stat1">
           <br />
           <center>
-            <h3>Information sur les personnes inscrit</h3>
+            <h3 style="font-weight: bold;">
+              Information sur les personnes inscrit
+            </h3>
           </center>
           <br />
           <StatPieAdmin />
@@ -206,7 +208,7 @@
     justify-content: center;
     flex-direction: column;
     padding: 20px 10px 10px 10px;
-    width: 80%;
+    width: 70%;
 
     border-radius: 3px 3px 20px 20px;
     border: 3px solid black;

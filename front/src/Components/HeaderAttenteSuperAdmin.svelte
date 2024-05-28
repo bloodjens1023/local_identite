@@ -1,5 +1,8 @@
 <script>
+  // @ts-nocheck
+
   import logo from "$lib/logos.png";
+  import Avatar from "./Avatar.svelte";
 
   export let acc = "";
   export let dem = "";
@@ -54,10 +57,20 @@
         </li>
       </ul>
     </div>
+    <div class="perso">
+      <a href="/SuperAdmin/MenuSuperAdmin"
+        ><Avatar width="50" round={true} userFullName="Admin" /></a
+      >
+    </div>
   </div>
 </nav>
 
 <style>
   @import url("$lib/bootstrap.min.css");
   @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Reddit+Mono:wght@200..900&display=swap");
+  @media screen and (max-width: 600px) {
+    .perso {
+      display: none;
+    }
+  }
 </style>

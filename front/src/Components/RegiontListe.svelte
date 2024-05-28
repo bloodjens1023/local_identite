@@ -167,7 +167,7 @@
     actuel = getCurrentPageData();
   }
 
-  let itemsPerPage = 4; // Nombre d'éléments par page
+  let itemsPerPage = 6; // Nombre d'éléments par page
   let currentPage = 1; // Page actuelle
 
   // Calcul du nombre total de pages

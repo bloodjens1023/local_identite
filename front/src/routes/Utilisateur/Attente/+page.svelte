@@ -53,7 +53,7 @@
 
 <Toaster />
 <div style="width: 100%; background-color: #e9ebee;">
-  <HeaderAttente acc="active" />
+  <HeaderAttente acc="active"  />
   <br /><br /><br />
   <div style="background-color: #e9ebee;">
     {#each filtrer as user}

@@ -174,6 +174,7 @@
   }
 
   let recherche = "";
+  let recherche2 = "";
   onMount(() => {
     fetchUtilisateur();
     fetchregion();
@@ -183,6 +184,17 @@
     filtrer = [];
     for (const i of users) {
       if (i["nom"].toLowerCase().includes(recherche.toLowerCase())) {
+        filtrer.push(i);
+      }
+    }
+    totalPages = Math.ceil(filtrer.length / itemsPerPage);
+    actuel = getCurrentPageData();
+  }
+  function search2() {
+    goToPage(1);
+    filtrer = [];
+    for (const i of users) {
+      if (i["region"].toLowerCase().includes(recherche2.toLowerCase())) {
         filtrer.push(i);
       }
     }
@@ -311,15 +323,25 @@
 <br />
 <br />
 <!-- code de recherche -->
-<center>
+<center style="display: flex; gap:10px;">
   <input
     id="input"
     name="text"
-    placeholder="Rechercher un district"
+    placeholder="Recherche par district"
     type="search"
     bind:value={recherche}
     on:input={() => {
       search();
+    }}
+  />
+  <input
+    id="input"
+    name="text"
+    placeholder="Recherche par region associé"
+    type="search"
+    bind:value={recherche2}
+    on:input={() => {
+      search2();
     }}
   />
 </center>
@@ -647,8 +669,8 @@
   }
 
   #input {
-    max-width: 800px;
-    width: 800px;
+    max-width: 400px;
+    width: 400px;
     background-color: #f5f5f5;
     color: #242424;
     padding: 0.15rem 0.5rem;
