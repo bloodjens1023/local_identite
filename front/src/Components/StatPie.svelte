@@ -10,7 +10,7 @@
   function creer(dataa) {
     const ctx = document.getElementById(nom);
     let datass = {
-      labels: ["encour", "refuser", "accepter"],
+      labels: ["en cours", "refuser", "accepter"],
       datasets: [
         {
           label: "Statitique",

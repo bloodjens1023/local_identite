@@ -10,7 +10,7 @@
   let anne;
   let dataa = [1, 1, 1];
   let datass = {
-    labels: ["encour", "refuser", "accepter"],
+    labels: ["en cours", "refuser", "accepter"],
     datasets: [
       {
         label: "Statitique",

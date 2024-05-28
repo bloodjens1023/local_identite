@@ -12,8 +12,6 @@
   let suppr = "";
   let modif = false;
   let ajout = false;
-  let success = false;
-  let error = false;
   let region = "";
   let regions = [];
   let codes = "";

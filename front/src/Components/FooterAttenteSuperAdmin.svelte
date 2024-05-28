@@ -43,7 +43,7 @@
         <li>
           <div class="trois"></div>
           <Motion let:motion whileHover={{ scale: 1.1 }}>
-            <a href="/Chef/MenuAdmin" use:motion>Menu</a>
+            <a href="/SuperAdmin/MenuSuperAdmin" use:motion>Menu</a>
           </Motion>
         </li>
       </ul>

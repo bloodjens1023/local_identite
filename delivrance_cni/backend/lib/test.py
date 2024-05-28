@@ -1,32 +1,34 @@
+
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-def envoie_email(destinataire, sujet, corp):
-    # Paramètres Gmail
-    email_sender = 'bloodjens32@gmail.com'
-    email_receiver = destinataire
 
-    # Création du message
-    message = MIMEMultipart()
-    message['From'] = email_sender
-    message['To'] = email_receiver
-    message['Subject'] = sujet
-
-    # Corps du message
-    body = corp
-    message.attach(MIMEText(body, 'html'))
-
-    # Connexion au serveur SMTP de Gmail
-    server = smtplib.SMTP('live.smtp.mailtrap.io', 587)
-    server.starttls()
-    server.login("api", "f7f08a46eabb0d519d2a23fafb01149b")
-
-    # Envoi de l'e-mail
-    text = message.as_string()
-    server.sendmail(email_sender, email_receiver, text)
-    print("sms envoyer")
-    # Fermeture de la connexion
-    server.quit()
+def send_email(subject, body, to_email):
+    sender_email = "your-email@example.com"
+    sender_password = "your-email-password"
     
     
-envoie_email("hasiniainafanomezantsoa32@gmail.com","test","tay be miboretaka")
+    # Create the email head (sender, receiver, and subject)
+    email = MIMEMultipart()
+    email["From"] = sender_email
+    email["To"] = to_email
+    email["Subject"] = subject
+
+    # Add body and attachments to email
+    email.attach(MIMEText(body, 'plain'))
+
+    # Create SMTP session for sending the mail
+    try:
+        server = smtplib.SMTP('smtp.example.com', 587)  # Use your SMTP server details
+        server.starttls()  # Enable security
+        server.login(sender_email, sender_password)  # Login with mail_id and password
+        text = email.as_string()
+        server.sendmail(sender_email, to_email, text)
+        server.quit()
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+
+# Example usage:
+# send_email("Test Subject", "Hello, this is a test email.", "receiver-email@example.com")
+
