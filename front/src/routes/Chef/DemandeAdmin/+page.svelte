@@ -17,7 +17,7 @@
   }, 1500);
   async function fetchDemande() {
     let id;
-    id = sessionStorage.getItem("chef");
+    id = localStorage.getItem("chef");
 
     try {
       const response = await fetch(
@@ -85,7 +85,7 @@
   }
   onMount(() => {
     try {
-      let id = sessionStorage.getItem("chef");
+      let id = localStorage.getItem("chef");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");

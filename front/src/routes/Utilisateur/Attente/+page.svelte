@@ -19,7 +19,7 @@
       const data = await response.json();
       users = data.data; // Supposons que 'data' est le nom de la clé qui contient les Utilidateur dans la réponse JSON
       filtrer = users;
-      console.log(filtrer);
+      // console.log(filtrer);
     } catch (error) {
       console.error("Erreur lors de la récupération des Utilisateurs:", error);
     }
@@ -27,14 +27,14 @@
 
   setInterval(() => {
     fetchUtilisateur();
-  }, 100);
+  }, 1000);
 
   function filter(a) {
     return "http://localhost:8000/" + a;
   }
   onMount(() => {
     try {
-      id = sessionStorage.getItem("identifiant");
+      id = localStorage.getItem("identifiant");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");
@@ -53,7 +53,7 @@
 
 <Toaster />
 <div style="width: 100%; background-color: #e9ebee;">
-  <HeaderAttente acc="active"  />
+  <HeaderAttente acc="active" />
   <br /><br /><br />
   <div style="background-color: #e9ebee;">
     {#each filtrer as user}

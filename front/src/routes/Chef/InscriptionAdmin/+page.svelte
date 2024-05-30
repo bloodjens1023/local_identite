@@ -65,7 +65,7 @@
           duration: 2000,
         });
         goto("/Chef/AccueilAdmin");
-        sessionStorage.setItem("chef", email);
+        localStorage.setItem("chef", email);
       } else {
         toast.error("Mots de passe ou email incorrecte", {
           style: "font-size:15px; padding:10px",

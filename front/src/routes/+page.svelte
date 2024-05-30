@@ -12,11 +12,34 @@
   import animation2 from "$lib/lotties/animation2.json";
   import { Motion } from "svelte-motion";
   import Footer from "../Components/Footer.svelte";
+  import { goto } from "$app/navigation";
 
   let visible = false;
   onMount(() => {
-    visible = true;
+    reload();
   });
+  function reload() {
+    try {
+      let id = localStorage.getItem("admin");
+      if (id != undefined && id != "") {
+        goto("/SuperAdmin/HomeSuperAdmin/");
+      } else {
+        let ids = localStorage.getItem("identifiant");
+        if (ids != undefined && id != "") {
+          goto("/Utilisateur/Attente/");
+        } else {
+          let ide = localStorage.getItem("chef");
+          if (ide != undefined && id != "") {
+            goto("/Chef/AccueilAdmin/");
+          } else {
+            visible = true;
+          }
+        }
+      }
+    } catch (error) {
+      visible = true;
+    }
+  }
 </script>
 
 <title>Mada Identité</title>

@@ -1,11 +1,12 @@
 <script>
   import { onMount } from "svelte";
-  import ArrondListe from "../../../Components/ArrondListe.svelte";
+  // @ts-ignore
   import { goto } from "$app/navigation";
   import Chargement from "../../../Components/Chargement.svelte";
   import FooterAttenteAdmin from "../../../Components/FooterAttenteAdmin.svelte";
   import HeaderAttenteAdmin from "../../../Components/HeaderAttenteAdmin.svelte";
   import RdvListe from "../../../Components/RdvListe.svelte";
+  import toast, { Toaster } from "svelte-french-toast";
 
   let loading = true;
   setTimeout(() => {
@@ -13,17 +14,21 @@
   }, 1500);
   onMount(() => {
     try {
-      let id = sessionStorage.getItem("chef");
+      let id = localStorage.getItem("chef");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");
       }
     } catch (error) {
-      goto("/Error");
+      toast.error("Erreur de serveur", {
+        style: "font-size:15px; padding:10px",
+        duration: 2000,
+      });
     }
   });
 </script>
 
+<Toaster />
 <div>
   <HeaderAttenteAdmin notif="active" />
   <br /><br />

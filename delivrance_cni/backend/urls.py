@@ -81,6 +81,7 @@ urlpatterns = [
     path("api_commenter/<int:id>", views.ajout_commentaire),
     path("api_get_comment/<int:ids>", views.get_commentaire_simple),
     
+    
     # notification
     path("api_notification/<str:id>", views.get_notification_simple),
     path("api_notification_non_lue/<str:id>", views.get_notification_non_lue),
@@ -92,12 +93,14 @@ urlpatterns = [
     path("api_accepter_demande/<str:id>", views.accepter_demande_arrondissement),
     path("api_stat_arrondissement_chef/<str:id>", views.stat_arrondissement_chef),
     path("api_stat_arrondissement_tous/<int:id>", views.stat_arrondissement_tous),
+    path("api_stat_arrondissement_specifique/<int:id>", views.stat_arrondissement_specifique),
     path("api_stat_utilisateur_tous/", views.stat_utilisateur_tous),
     path("api_stat_karatra_tous/<int:anne>", views.stat_karatra),
     path("api_stat_utilisateur_arrond/<str:id>/<int:anne>", views.stat_utilisateur_arrond),
     path("api_stat_utilisateur_arrond_tous/<int:anne>", views.stat_utilisateur_arrond_tous),
     path("ajouter_retour/<str:id>", views.ajouter_retour),
     path("voir_retour/", views.voir_retour),
+    path("verification_duplication/", views.verification_dupli),
     
    
     path("get_district/<str:id>", views.get_district),

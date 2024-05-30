@@ -1,14 +1,16 @@
 <script>
+  // @ts-ignore
+  import { goto } from "$app/navigation";
   import HeaderAttenteSuperAdmin from "../../../Components/HeaderAttenteSuperAdmin.svelte";
   import UtilisateurListe from "../../../Components/UtilisateurListe.svelte";
   import { onMount } from "svelte";
-  import { goto } from "$app/navigation";
+
   import FooterAttenteSuperAdmin from "../../../Components/FooterAttenteSuperAdmin.svelte";
   import Chargement from "../../../Components/Chargement.svelte";
 
   onMount(() => {
     try {
-      let id = sessionStorage.getItem("admin");
+      let id = localStorage.getItem("admin");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");
@@ -19,6 +21,7 @@
   });
 </script>
 
+<title>Les utilisateurs</title>
 <div>
   <HeaderAttenteSuperAdmin dem="active" />
   <br /><br />

@@ -22,7 +22,7 @@
     } else {
       note = 0;
     }
-    let id = sessionStorage.getItem("identifiant");
+    let id = localStorage.getItem("identifiant");
     let formdata = new FormData();
     formdata.append("note", note.toString());
     const response = await fetch("http://localhost:8000/ajouter_retour/" + id, {

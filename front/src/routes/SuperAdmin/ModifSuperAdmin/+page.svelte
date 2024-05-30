@@ -19,7 +19,7 @@
   let checker1 = false;
   let datas;
   const getPosts = async () => {
-    users = sessionStorage.getItem("admin");
+    users = localStorage.getItem("admin");
 
     const res = await fetch(
       "http://localhost:8000/afficheUtilisateur/" + users
@@ -55,7 +55,7 @@
 
     let response;
     try {
-      let use = sessionStorage.getItem("admin");
+      let use = localStorage.getItem("admin");
       response = await fetch("http://localhost:8000/updateUtilisateur/" + use, {
         method: "POST",
         body: formdata,
@@ -92,8 +92,8 @@
 
   onMount(async () => {
     if (
-      sessionStorage.getItem("admin") == undefined ||
-      sessionStorage.getItem("admin") == ""
+      localStorage.getItem("admin") == undefined ||
+      localStorage.getItem("admin") == ""
     ) {
       goto("/Error");
     } else {
@@ -479,9 +479,7 @@
     font-size: 2rem;
     font-weight: bold;
   }
-  p {
-    font-size: 1.4em;
-  }
+
   h2 {
     font-size: 1.7rem;
     font-weight: bold;
@@ -542,9 +540,6 @@
   }
 
   @media only screen and (max-width: 768px) {
-    p {
-      font-size: 1em;
-    }
     h1 {
       font-size: 1.7rem;
     }

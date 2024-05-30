@@ -7,7 +7,7 @@
 
   const handleSubmit = async (event) => {
     let formdata = new FormData();
-    formdata.append("identifiant", sessionStorage.getItem("identifiant"));
+    formdata.append("identifiant", localStorage.getItem("identifiant"));
     formdata.append("id", id);
 
     let response;

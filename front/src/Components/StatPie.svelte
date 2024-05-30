@@ -31,7 +31,7 @@
   }
   async function stat() {
     try {
-      let id = sessionStorage.getItem("chef");
+      let id = localStorage.getItem("chef");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");

@@ -52,12 +52,12 @@
           duration: 2000,
         });
         loading = false;
-        sessionStorage.setItem("chef", email);
+        localStorage.setItem("chef", email);
 
         goto("/Chef/AccueilAdmin");
       } else {
         console.error("Erreur");
-        toast.error("Erreur de connexion", {
+        toast.error("Erreur de de email ou mots de passe", {
           style: "font-size:15px; padding:10px",
           duration: 2000,
         });

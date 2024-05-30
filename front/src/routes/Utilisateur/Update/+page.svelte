@@ -20,7 +20,7 @@
   let checker1 = false;
   let datas;
   const getPosts = async () => {
-    users = sessionStorage.getItem("identifiant");
+    users = localStorage.getItem("identifiant");
 
     const res = await fetch(
       "http://localhost:8000/afficheUtilisateur/" + users
@@ -57,7 +57,7 @@
     let response;
     loads = true;
     try {
-      let use = sessionStorage.getItem("identifiant");
+      let use = localStorage.getItem("identifiant");
       response = await fetch("http://localhost:8000/updateUtilisateur/" + use, {
         method: "POST",
         body: formdata,
@@ -87,8 +87,8 @@
 
   onMount(async () => {
     if (
-      sessionStorage.getItem("identifiant") == undefined ||
-      sessionStorage.getItem("identifiant") == ""
+      localStorage.getItem("identifiant") == undefined ||
+      localStorage.getItem("identifiant") == ""
     ) {
       goto("/Error");
     }

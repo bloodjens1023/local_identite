@@ -14,7 +14,7 @@
   let current = "0";
   onMount(() => {
     try {
-      let users = sessionStorage.getItem("identifiant");
+      let users = localStorage.getItem("identifiant");
       if (users == "" || users == null || users == undefined) {
         goto("error");
       }

@@ -1,4 +1,5 @@
 <script>
+  // @ts-nocheck
   import StatUser from "../../../Components/StatUser.svelte";
   import ListeDemande from "../../../Components/ListeDemande.svelte";
 
@@ -8,9 +9,9 @@
   import { goto } from "$app/navigation";
   import StatPieAdmin from "../../../Components/StatPieAdmin.svelte";
   import Chargement from "../../../Components/Chargement.svelte";
-  import Rate from "../../../Components/Rate.svelte";
   import ProgressStat from "../../../Components/ProgressStat.svelte";
   import StatCni from "../../../Components/StatCni.svelte";
+  import StatPieAdminAdvanced from "../../../Components/StatPieAdminAdvanced.svelte";
 
   let loads = true;
   setTimeout(() => {
@@ -19,7 +20,7 @@
 
   onMount(() => {
     try {
-      let id = sessionStorage.getItem("admin");
+      let id = localStorage.getItem("admin");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");
@@ -109,6 +110,24 @@
 
     <br /><br />
     <div
+      style="height: 100%;  width: 100%; display:flex;align-items: center; justify-content: center;flex-direction: column;"
+    >
+      <div class="stat" style="padding-bottom: 30px;">
+        <div class="titre">
+          <div>
+            <h1>Statistique des demandes spécifiques</h1>
+          </div>
+        </div>
+        <br />
+        <br />
+        <div style="width: 90%; display: contents;">
+          <StatPieAdminAdvanced />
+        </div>
+      </div>
+    </div>
+
+    <br /><br />
+    <div
       style="width: 100%; display:flex;align-items: center; justify-content: center;flex-direction: column;"
     >
       <div class="stat">
@@ -143,9 +162,10 @@
     border: 3px solid #343a40;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     flex-direction: column;
     width: 60%;
+    height: 100%;
     border-radius: 0px 0px 30px 30px;
   }
   .titre {

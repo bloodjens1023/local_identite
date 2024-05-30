@@ -1,17 +1,36 @@
 <script>
+  // @ts-nocheck
+
   import logo from "$lib/logos.png";
   import { onDestroy, onMount } from "svelte";
-  import { Motion } from "svelte-motion";
+  import toast from "svelte-french-toast";
+  import Avatar from "./Avatar.svelte";
   export let acc = "";
   export let dem = "";
   export let men = "";
   export let notif = "";
-
+  let id = localStorage.getItem("chef");
   let co = [];
   let count = 0;
-  async function fetchDemande() {
-    let id = sessionStorage.getItem("chef");
+  function filter(a) {
+    return "http://localhost:8000/" + a;
+  }
+  async function selectChef() {
+    try {
+      id = localStorage.getItem("chef");
+      const response = await fetch("http://localhost:8000/afficheChef/" + id);
+      const data = await response.json();
 
+      return data.data[0];
+    } catch (error) {
+      toast.error("Erreur de serveur", {
+        style: "font-size:15px; padding:10px",
+        duration: 2000,
+      });
+    }
+  }
+  async function fetchDemande() {
+    id = localStorage.getItem("chef");
     try {
       const response = await fetch(
         "http://localhost:8000/api_liste_demande_arrond/" + id
@@ -72,6 +91,24 @@
           <a class="nav-link {men}" href="/Chef/MenuAdmin">Menu</a>
         </li>
       </ul>
+    </div>
+    <div>
+      {#await selectChef()}
+        <a href="/Chef/MenuAdmin"
+          ><Avatar width="50" round={true} userFullName={id} /></a
+        >
+      {:then data}
+        {#if data["photo"] == ""}
+          <a href="/Chef/MenuAdmin"
+            ><Avatar width="50" round={true} userFullName={id} /></a
+          >
+        {/if}
+        {#if data["photo"] != ""}
+          <a href="/Chef/MenuAdmin"
+            ><Avatar width="50" round={true} src={filter(data["photo"])} /></a
+          >
+        {/if}
+      {/await}
     </div>
   </div>
 </nav>

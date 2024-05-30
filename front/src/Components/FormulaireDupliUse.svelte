@@ -33,15 +33,16 @@
     formdata.append("type", "duplicatatUse");
     formdata.append("nom", donne.nom);
     formdata.append("prenom", donne.prenom);
+    formdata.append("genre", donne.genre);
     formdata.append("numCni", donne.num);
     formdata.append("adresse", donne.adresse);
     formdata.append("photo", donne.photo);
     formdata.append("certificat", donne.resid);
-    formdata.append("identifiant", sessionStorage.getItem("identifiant"));
+    formdata.append("identifiant", localStorage.getItem("identifiant"));
     loads = true;
     let response;
     if (update) {
-      let use = sessionStorage.getItem("identifiant");
+      let use = localStorage.getItem("identifiant");
       response = await fetch("http://localhost:8000/updateDocument/" + use, {
         method: "POST",
         body: formdata,
@@ -75,7 +76,7 @@
 
   let users = "";
   const getPosts = async () => {
-    users = sessionStorage.getItem("identifiant");
+    users = localStorage.getItem("identifiant");
 
     const res = await fetch("http://localhost:8000/afficheDocument/" + users);
 
@@ -101,7 +102,31 @@
     }
   });
 
-  function verifier_document() {
+  async function verifier_numero_CNI() {
+    let formdata = new FormData();
+    if (donne.num == undefined) {
+      donne.num = "";
+    }
+    formdata.append("numCni", donne.num);
+    let response = await fetch(
+      "http://localhost:8000/verification_duplication/",
+      {
+        method: "POST",
+        body: formdata,
+      }
+    );
+    const data = await response.json();
+    let users = data.data;
+    console.log(donne.num);
+    console.log(users);
+    if (users === 0) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
+  async function verifier_document() {
     chargement_photo = true;
     chargement_certif = true;
     accepter_photo = false;
@@ -110,9 +135,23 @@
     refuser_photo = false;
     refuser_certif = false;
 
-    showModal = true;
-    verif_photo();
-    verif_certificat();
+    if (donne.num == "") {
+      toast.error("Remplissez les champs ", {
+        style: "font-size:15px; padding:10px",
+        duration: 2000,
+      });
+    } else {
+      if ((await verifier_numero_CNI()) === 1) {
+        showModal = true;
+        verif_photo();
+        verif_certificat();
+      } else {
+        toast.error("Votre CNI n'est pas disponible dans nos base de données", {
+          style: "font-size:15px; padding:10px",
+          duration: 2000,
+        });
+      }
+    }
   }
 
   const verif_certificat = async (event) => {
@@ -155,6 +194,11 @@
       if (users) {
         accepter_photo = true;
         chargement_photo = false;
+        if (data.genre == "male") {
+          donne.genre = 1;
+        } else {
+          donne.genre = 2;
+        }
       } else {
         refuser_photo = true;
         chargement_photo = false;
@@ -178,7 +222,7 @@
     class="definition-list"
     style="display: flex;
   flex-direction: column;
-  align-items: baseline; width: 100%;"
+  align-items: baseline; width: 100%; padding:initial;"
   >
     <br />
     <div style="display: flex; gap: 30px;">
@@ -195,7 +239,7 @@
     </div>
     <br />
     <div
-      style="display: flex; gap: 30px; align-items: center; justify-content: center;"
+      style="display: flex; gap: 30px; align-items: center; justify-content: center;  padding-left: 30px;"
     >
       {#if accepter_certif}
         <Accepter />
@@ -212,7 +256,7 @@
     </div>
     <br />
     <div
-      style="width: 100%; display: flex; align-items: center; justify-content: center;"
+      style="width: 100%; display: flex; align-items: center; justify-content: center; padding-left: 30px;"
     >
       {#if !loads}
         {#if accepter_certif && accepter_photo}

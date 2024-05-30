@@ -1,10 +1,10 @@
 <script>
   // @ts-nocheck
-  import { goto } from "$app/navigation";
+
   import { onDestroy, onMount } from "svelte";
   import { Motion } from "svelte-motion";
   import Modal from "./Modal.svelte";
-  import toast, { Toaster } from "svelte-french-toast";
+  import toast from "svelte-french-toast";
 
   let showModal = false;
   let suppr = "";
@@ -91,7 +91,7 @@
         style: "font-size:15px; padding:10px",
         duration: 2000,
       });
-      // sessionStorage.setItem("identifiant", identifiant);
+      // localStorage.setItem("identifiant", identifiant);
     } else {
       toast.error("Erreur de serveur", {
         style: "font-size:15px; padding:10px",
@@ -204,7 +204,6 @@
     </div>
   </Modal>
 {/if}
-<Toaster />
 <center style="display: flex; gap: 30px;">
   <h2>Liste des CNI non récuperer</h2>
 </center>
@@ -215,7 +214,7 @@
   <input
     id="input"
     name="text"
-    placeholder="Rechercher un arrondissement"
+    placeholder="Recherche d'un rendez-vous"
     type="search"
     bind:value={recherche}
     on:input={() => {

@@ -30,7 +30,7 @@
     border-radius: 30px;
   }
   dialog::backdrop {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(203, 203, 203, 0.3);
   }
   dialog > div {
     padding: 1em;

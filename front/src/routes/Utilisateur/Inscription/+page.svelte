@@ -28,35 +28,45 @@
   let region = 1;
   let district = 1;
   let loading = false;
+  let correct = true;
+  let newpassword = "";
 
   async function handleSubmit() {
     loading = true;
-    try {
-      const response = await fetch("http://localhost:8000/api_inscription/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ identifiant, email, tel, arrond, password }),
-      });
+    if (password === newpassword) {
+      try {
+        const response = await fetch("http://localhost:8000/api_inscription/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ identifiant, email, tel, arrond, password }),
+        });
 
-      const data = await response.json();
-      const message = data.message;
-      info = data.info;
+        const data = await response.json();
+        const message = data.message;
 
-      if (message) {
-        loading = false;
+        info = data.info;
 
-        sessionStorage.setItem("identifiant", identifiant);
-        goto("/Utilisateur/Step");
-      } else {
-        toast.error("Erreur de l'inscription", {
+        if (message) {
+          loading = false;
+
+          localStorage.setItem("identifiant", identifiant);
+          goto("/Utilisateur/Step");
+        } else {
+          toast.error(info, {
+            style: "font-size:15px; padding:10px",
+          });
+          loading = false;
+        }
+      } catch (error) {
+        toast.error("Erreur du serveur", {
           style: "font-size:15px; padding:10px",
         });
         loading = false;
       }
-    } catch (error) {
-      toast.error("Erreur du serveur", {
+    } else {
+      toast.error("Votre mots de passe ne sont pas identique", {
         style: "font-size:15px; padding:10px",
       });
       loading = false;
@@ -113,7 +123,7 @@
   }
 
   onMount(() => {
-    let users = sessionStorage.getItem("identifiant");
+    let users = localStorage.getItem("identifiant");
     fetchregion();
   });
 </script>
@@ -204,11 +214,56 @@
             id="pass"
             type="password"
             bind:value={password}
+            on:input={(e) => {
+              password = e.target.value;
+              if (newpassword == password) {
+                correct = true;
+              } else {
+                correct = false;
+              }
+            }}
             minlength="8"
           />
           <label class="label" for="pass">Mots de passe</label>
           <div class="underline"></div>
         </div>
+        <div class="input-container">
+          <input
+            required
+            id="pass"
+            type="password"
+            bind:value={newpassword}
+            on:input={(e) => {
+              newpassword = e.target.value;
+              if (newpassword == password) {
+                correct = true;
+              } else {
+                correct = false;
+              }
+            }}
+            minlength="8"
+          />
+          <label class="label" for="pass"
+            >Confirmez votre mot de passe {#if !correct}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                style="fill: red; position: relative; left: 10px;"
+                class="bi bi-exclamation-triangle-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"
+                />
+              </svg>
+            {/if}</label
+          >
+          <span> </span>
+          <div class="underline"></div>
+        </div>
+
         {#if loading}
           <ChargementConnect />
         {/if}

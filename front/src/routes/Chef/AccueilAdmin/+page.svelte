@@ -14,7 +14,7 @@
   let co = [];
   async function fetchDemande() {
     try {
-      let id = sessionStorage.getItem("chef");
+      let id = localStorage.getItem("chef");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");
@@ -46,7 +46,7 @@
 
   onMount(() => {
     try {
-      id = sessionStorage.getItem("chef");
+      id = localStorage.getItem("chef");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");

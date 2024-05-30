@@ -91,7 +91,7 @@
         });
         noms = "";
 
-        // sessionStorage.setItem("identifiant", identifiant);
+        // localStorage.setItem("identifiant", identifiant);
       } else {
         toast.error("Erreur de serveur", {
           style: "font-size:15px; padding:10px",
@@ -136,7 +136,7 @@
           style: "font-size:15px; padding:10px",
           duration: 2000,
         });
-        // sessionStorage.setItem("identifiant", identifiant);
+        // localStorage.setItem("identifiant", identifiant);
       } else {
         toast.error("Erreur de serveur", {
           style: "font-size:15px; padding:10px",

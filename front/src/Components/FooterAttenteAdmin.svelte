@@ -35,11 +35,11 @@
       </ul>
     </div>
     <div class="low">
-      <h4>Telecharger Mada Identity</h4>
+      <!-- <h4>Telecharger Mada Identity</h4>
       <br />
       <Motion let:motion whileHover={{ scale: 1.1, rotate: "3deg" }}>
         <button use:motion>Télécharger l'appli</button></Motion
-      >
+      > -->
     </div>
   </div>
   <p style="text-align: right;">Copyright © 2024 Madagascar Identité</p>

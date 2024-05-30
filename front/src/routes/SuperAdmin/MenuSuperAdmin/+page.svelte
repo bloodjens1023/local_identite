@@ -12,6 +12,7 @@
   import FooterAttenteSuperAdmin from "../../../Components/FooterAttenteSuperAdmin.svelte";
   import Chargement from "../../../Components/Chargement.svelte";
   import ProgressStat from "../../../Components/ProgressStat.svelte";
+  import Avatar from "../../../Components/Avatar.svelte";
 
   let loads = true;
   setTimeout(() => {
@@ -24,7 +25,7 @@
   let post = [];
   let users = "";
   const getPosts = async () => {
-    users = sessionStorage.getItem("admin");
+    users = localStorage.getItem("admin");
 
     const res = await fetch(
       "http://localhost:8000/afficheUtilisateur/" + users
@@ -38,7 +39,7 @@
 
   onMount(async () => {
     try {
-      let id = sessionStorage.getItem("admin");
+      let id = localStorage.getItem("admin");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");
@@ -77,16 +78,16 @@
           <center> <h2>Information Personnel</h2></center>
           <br /><br />
           <div class="prev">
-            <div class="photos">
-              <img
-                src={filter(data["photo"])}
-                alt=""
-                srcset=""
-                class="photo"
-                style=" max-width: 100%; /* Empêcher l'image de dépasser la largeur de son conteneur */
-            height: auto; "
-              />
-            </div>
+            <center style="width: 30%; margin-bottom: 30px;">
+              <a href="/SuperAdmin/MenuSuperAdmin"
+                ><Avatar
+                  width="100"
+                  round={true}
+                  userFullName="Admin"
+                  src={filter(data["photo"])}
+                /></a
+              >
+            </center>
             <div class="prop">
               <p>Identifiant : {data["identifiant"]}</p>
               <p>Email : {data["email"]}</p>
@@ -110,7 +111,7 @@
               class="btn btn-outline-danger"
               style="height:50px; width:200px; margin-right: 20px;"
               on:click={() => {
-                sessionStorage.removeItem("admin");
+                localStorage.removeItem("admin");
                 goto("/Utilisateur/Connexion");
               }}>Déconnecter</button
             >
@@ -187,13 +188,7 @@
     border-radius: 3px 3px 20px 20px;
     padding: 30px 10px 40px 30px;
   }
-  .photo {
-    width: 200px;
-    height: 200px;
-    border: 1px solid black;
-    padding: 20px;
-    border-radius: 20px;
-  }
+
   .prop {
     width: 70%;
   }
@@ -225,9 +220,7 @@
       flex-direction: column;
       align-items: center;
     }
-    .photo {
-      margin-bottom: 30px;
-    }
+
     .bones {
       justify-content: center;
     }

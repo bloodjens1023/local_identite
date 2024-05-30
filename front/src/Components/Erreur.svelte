@@ -4,7 +4,7 @@
   var chef = false;
   var aucun = false;
   try {
-    let id = sessionStorage.getItem("identifiant");
+    let id = localStorage.getItem("identifiant");
 
     if (id == null || id == undefined || id == "") {
       console.log("null");
@@ -14,7 +14,7 @@
     }
   } catch (error) {}
   try {
-    let id = sessionStorage.getItem("chef");
+    let id = localStorage.getItem("chef");
 
     if (id == null || id == undefined || id == "") {
       console.log("null");

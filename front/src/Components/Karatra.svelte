@@ -30,7 +30,7 @@
   });
 
   async function fetchCart() {
-    let id = sessionStorage.getItem("identifiant");
+    let id = localStorage.getItem("identifiant");
 
     let co = [];
     try {

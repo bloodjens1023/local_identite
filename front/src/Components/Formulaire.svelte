@@ -33,14 +33,15 @@
     formdata.append("nom", donne.nom);
     formdata.append("prenom", donne.prenom);
     formdata.append("adresse", donne.adresse);
+    formdata.append("genre", donne.genre);
     formdata.append("photo", donne.photo);
     formdata.append("certificat", donne.resid);
     formdata.append("acteNaissance", donne.acte);
-    formdata.append("identifiant", sessionStorage.getItem("identifiant"));
+    formdata.append("identifiant", localStorage.getItem("identifiant"));
     loads = true;
     let response;
     if (update) {
-      let use = sessionStorage.getItem("identifiant");
+      let use = localStorage.getItem("identifiant");
       response = await fetch("http://localhost:8000/updateDocument/" + use, {
         method: "POST",
         body: formdata,
@@ -63,7 +64,7 @@
       });
       onSubmit(donne);
 
-      // sessionStorage.setItem("identifiant", identifiant);
+      // localStorage.setItem("identifiant", identifiant);
     } else {
       toast.error("Erreur de remplissage", {
         style: "font-size:15px; padding:10px",
@@ -76,7 +77,7 @@
 
   let users = "";
   const getPosts = async () => {
-    users = sessionStorage.getItem("identifiant");
+    users = localStorage.getItem("identifiant");
 
     const res = await fetch("http://localhost:8000/afficheDocument/" + users);
 
@@ -153,6 +154,12 @@
       if (users) {
         accepter_photo = true;
         chargement_photo = false;
+        
+        if (data.genre == "male") {
+          donne.genre = 1;
+        } else {
+          donne.genre = 2;
+        }
       } else {
         refuser_photo = true;
         chargement_photo = false;
@@ -203,10 +210,10 @@
     class="definition-list"
     style="display: flex;
   flex-direction: column;
-  align-items: baseline; width: 100%;"
+  align-items: baseline; width: 100%; padding: initial;"
   >
     <br />
-    <div style="display: flex; gap: 30px;">
+    <div style="display: flex; gap: 30px; padding-left: 30px;">
       {#if accepter_photo}
         <Accepter />
       {/if}
@@ -220,7 +227,7 @@
     </div>
     <br />
     <div
-      style="display: flex; gap: 30px; align-items: start; justify-content: center;"
+      style="display: flex; gap: 30px; align-items: start; justify-content: center;  padding-left: 30px;"
     >
       {#if accepter_acte}
         <Accepter />
@@ -235,7 +242,7 @@
     </div>
     <br />
     <div
-      style="display: flex; gap: 30px; align-items: center; justify-content: center;"
+      style="display: flex; gap: 30px; align-items: center; justify-content: center;  padding-left: 30px;"
     >
       {#if accepter_certif}
         <Accepter />
@@ -252,7 +259,7 @@
     </div>
     <br />
     <div
-      style="width: 100%; display: flex; align-items: center; justify-content: center;"
+      style="width: 100%; display: flex; align-items: center; justify-content: center; padding: 0;"
     >
       {#if !loads}
         {#if accepter_acte && accepter_certif && accepter_photo}

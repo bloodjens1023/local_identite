@@ -6,18 +6,22 @@
   let commentaire = "";
   import { onMount } from "svelte";
   import toast, { Toaster } from "svelte-french-toast";
+  import Avatar from "./Avatar.svelte";
   // export let success = false;
   let identifiant;
   export let id = "";
   export let details = true;
   onMount(() => {
-    // Récupérer l'identifiant de l'utilisateur depuis sessionStorage
-    identifiant = sessionStorage.getItem("identifiant");
+    // Récupérer l'identifiant de l'utilisateur depuis localStorage
+    identifiant = localStorage.getItem("identifiant");
   });
+  function filter(a) {
+    return "http://localhost:8000/" + a;
+  }
 
   async function fetchComm(id) {
     let formdata = new FormData();
-    formdata.append("identifiant", sessionStorage.getItem("identifiant"));
+    formdata.append("identifiant", localStorage.getItem("identifiant"));
     formdata.append("contenue", commentaire);
     let co = [];
     try {
@@ -44,10 +48,16 @@
         {#if i < 3}
           <div class="comm">
             <div class="row" style="padding: 10px;">
-              <div
-                style="width: 30px; height: 30px; background-color: black; border-radius: 30px;"
-                class="col-2"
-              ></div>
+              <div style="" class="col-1">
+                <Avatar
+                  width="30"
+                  height="30"
+                  round={true}
+                  userFullName={comments.utilisateur}
+                  src={filter(comments.photo)}
+                />
+              </div>
+
               <div class="col-10" style="font-weight: bold;">
                 <p>{comments.utilisateur}</p>
               </div>
@@ -67,6 +77,7 @@
             ></div>
             <div class="col-10" style="font-weight: bold;">
               <p>{comments.utilisateur}</p>
+              <!-- <p>{comments.photo}</p> -->
             </div>
           </div>
           <p style="word-wrap: break-word; margin-left: 30px;">

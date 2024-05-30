@@ -7,7 +7,7 @@
 
   onMount(() => {
     try {
-      let id = sessionStorage.getItem("admin");
+      let id = localStorage.getItem("admin");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");

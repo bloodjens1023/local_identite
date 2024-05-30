@@ -15,11 +15,7 @@
       {
         label: "Statitique",
         data: dataa,
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
-        ],
+        backgroundColor: ["#FFA500", "#DC3545", "#28A745"],
       },
     ],
   };
@@ -116,7 +112,7 @@
   }
 </script>
 
-<div style="width: 300px;">
+<div class="resp">
   <canvas id={nom}></canvas>
   <br />
   <div class="regroup">
@@ -187,17 +183,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 10px;
   }
   select {
-    width: auto;
+    max-width: 200px;
+    width: 200px;
   }
-  @media only screen and (max-width: 768px) {
+  .resp {
+    width: 300px;
+  }
+  @media only screen and (max-width: 1000px) {
     .regroup {
       flex-direction: column;
     }
     select {
-      width: 300px;
+      max-width: 250px;
+      width: 250px;
+    }
+    .resp {
+      width: 250px;
     }
   }
 </style>

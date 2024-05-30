@@ -7,6 +7,7 @@
   import Comment from "./Comment.svelte";
   import Like from "./Like.svelte";
   import { goto } from "$app/navigation";
+  import Avatar from "./Avatar.svelte";
   export let description = "";
   export let aimer = 0;
   export let image = "";
@@ -48,8 +49,11 @@ flex-direction: column; background-color: #e9ebee;"
       <div
         style="display: flex; align-items: center; gap:10px; width: 100%;border:3px solid black; padding: 10px; border-radius: 20px;"
       >
-        <img src={logo} alt="" style="width: 70px; " />
-        <span style="font-size: 1.5em; font-weight: bold;">Administrateur</span>
+        <!-- <img src={logo} alt="" style="width: 70px; " /> -->
+        <Avatar width="50" userFullName="Admin" round="true" />
+        <span style="font-size: 1.5em; font-weight: bold; width: 90%;"
+          >Administrateur</span
+        >
       </div>
       <p class="para">
         {description}
@@ -62,7 +66,7 @@ flex-direction: column; background-color: #e9ebee;"
         <button
           class="bookmarkBtn"
           on:click={() => {
-            sessionStorage.setItem("pub_id", ids);
+            localStorage.setItem("pub_id", ids);
             goto("/Utilisateur/Betail");
           }}
         >

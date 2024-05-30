@@ -1,10 +1,12 @@
 <script>
-	import RdvListe from './../../../Components/RdvListe.svelte';
+  // @ts-ignore
+  import RdvListe from "./../../../Components/RdvListe.svelte";
   import { Motion } from "svelte-motion";
   import Header from "../../../Components/Header.svelte";
   import Footer from "../../../Components/Footer.svelte";
   import { fade } from "svelte/transition";
   import { onMount } from "svelte";
+  // @ts-ignore
   import { goto } from "$app/navigation";
   import ChargementConnect from "../../../Components/ChargementConnect.svelte";
   import toast, { Toaster } from "svelte-french-toast";
@@ -35,10 +37,12 @@
       info = data.info;
       if (message) {
         if (identifiant == "admin") {
-          sessionStorage.setItem("admin", identifiant);
-          goto("/SuperAdmin/HomeSuperAdmin");
+          toast.error("Erreur de l'identifiant", {
+            style: "font-size:15px; padding:10px",
+            duration: 2000,
+          });
         } else {
-          sessionStorage.setItem("identifiant", identifiant);
+          localStorage.setItem("identifiant", identifiant);
           goto("/Utilisateur/Attente");
         }
 

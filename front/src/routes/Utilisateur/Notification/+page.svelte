@@ -15,7 +15,7 @@
 
   async function fetchNotif() {
     try {
-      let id = sessionStorage.getItem("identifiant");
+      let id = localStorage.getItem("identifiant");
       if (id == undefined || id == "") {
         goto("/Error");
       } else {

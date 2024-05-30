@@ -4,12 +4,14 @@
   import logo from "$lib/logos.png";
   import { onDestroy, onMount } from "svelte";
   import Avatar from "./Avatar.svelte";
+  import Chargement from "./Chargement.svelte";
+  import ChargementConnect from "./ChargementConnect.svelte";
   export let acc = "";
   export let dem = "";
   export let men = "";
   export let notif = "";
   export let virt = "";
-  let id = sessionStorage.getItem("identifiant");
+  let id = localStorage.getItem("identifiant");
   let count = 0;
   function filter(a) {
     return "http://localhost:8000/" + a;
@@ -29,7 +31,7 @@
     }
   }
   async function fetchNotif() {
-    id = sessionStorage.getItem("identifiant");
+    id = localStorage.getItem("identifiant");
 
     let co = [];
     try {
@@ -44,7 +46,7 @@
     }
   }
   async function toutlue() {
-    id = sessionStorage.getItem("identifiant");
+    id = localStorage.getItem("identifiant");
 
     let co = [];
     try {
@@ -121,9 +123,7 @@
     </div>
     <div>
       {#await selectUtilisateur()}
-        <a href="/Utilisateur/Menu"
-          ><Avatar width="50" round={true} userFullName={id} /></a
-        >
+        <ChargementConnect />
       {:then data}
         {#if data["photo"] == ""}
           <a href="/Utilisateur/Menu"
@@ -134,8 +134,8 @@
           <a href="/Utilisateur/Menu"
             ><Avatar
               width="50"
-              
               round={true}
+              userFullName={id}
               src={filter(data["photo"])}
             /></a
           >

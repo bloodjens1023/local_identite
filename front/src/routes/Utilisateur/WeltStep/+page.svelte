@@ -21,7 +21,7 @@
   let users = "";
   const getPosts = async () => {
     try {
-      let users = sessionStorage.getItem("identifiant");
+      let users = localStorage.getItem("identifiant");
       if (users == "" || users == null || users == undefined) {
         goto("error");
       } else {

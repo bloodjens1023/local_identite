@@ -486,6 +486,7 @@ def envoieDemande(request):
         serializer = Document(nom = request.POST.get('nom'),
                                prenom = request.POST.get('prenom'),
                                adresse = request.POST.get('adresse'),
+                               sexe = request.POST.get('genre'),
                                numCni = "",
                                photo = request.FILES['photo'],
                                declarationPerte = "",
@@ -500,6 +501,7 @@ def envoieDemande(request):
         serializer = Document(nom = request.POST.get('nom'),
                                prenom = request.POST.get('prenom'),
                                adresse = request.POST.get('adresse'),
+                               sexe = request.POST.get('genre'),
                                numCni = request.POST.get('numCni'),
                                photo = request.FILES['photo'],
                                declarationPerte = "",
@@ -514,6 +516,7 @@ def envoieDemande(request):
         serializer = Document(nom = request.POST.get('nom'),
                                prenom = request.POST.get('prenom'),
                                adresse = request.POST.get('adresse'),
+                               sexe = request.POST.get('genre'),
                                numCni = request.POST.get('numCni'),
                                photo = request.FILES['photo'],
                                declarationPerte = request.FILES['declarationPerte'],
@@ -755,7 +758,7 @@ def get_commentaire_simple(request,ids):
         data = []
 
         for coms in com:
-            data.append({'utilisateur':coms.utilisateur.identifiant,'contenu':coms.contenue })
+            data.append({'utilisateur':coms.utilisateur.identifiant,'contenu':coms.contenue ,'photo' : str(coms.utilisateur.photo) })
 
 
         return JsonResponse({'data': data,})
@@ -1047,8 +1050,10 @@ def stat_arrondissement_chef(request,id):
         return JsonResponse({'data': False})
 
 
-def stat_arrondissement_tous(request,id):
+@api_view(["POST"])
+def stat_arrondissement_specifique(request,id):
     try:
+        r = request.POST.get('type') 
         doc = Document.objects.all()
         arrond = Arrondissement.objects.get(id = id)
         encour = 0
@@ -1058,6 +1063,51 @@ def stat_arrondissement_tous(request,id):
 
 
 
+        if(r == ""):
+            for pubs in doc:
+                if(arrond == pubs.utilisateur.arrondissement):
+                    if(pubs.etatDocument == "encours"):
+                        encour+=1
+                    elif(pubs.etatDocument == "refuser"):
+                        refuser+=1
+                    elif(pubs.etatDocument == "accepter"):
+                        accepter+=1
+        else:
+            for pubs in doc:
+                if(arrond == pubs.utilisateur.arrondissement and pubs.typeDocument == r):
+                    if(pubs.etatDocument == "encours"):
+                        encour+=1
+                    elif(pubs.etatDocument == "refuser"):
+                        refuser+=1
+                    elif(pubs.etatDocument == "accepter"):
+                        accepter+=1
+
+
+        data.append({"encour": encour, "refuser": refuser, "accepter": accepter})
+
+        encour = 0
+        accepter = 0
+        refuser = 0
+
+        return JsonResponse({'data': data,})
+    except:
+        return JsonResponse({'data': False})
+
+
+
+
+def stat_arrondissement_tous(request,id):
+
+    try:
+        doc = Document.objects.all()
+        arrond = Arrondissement.objects.get(id = id)
+        encour = 0
+        accepter = 0
+        refuser = 0
+        data = []
+
+
+        
         for pubs in doc:
                 if(arrond == pubs.utilisateur.arrondissement):
                     if(pubs.etatDocument == "encours"):
@@ -1077,6 +1127,9 @@ def stat_arrondissement_tous(request,id):
         return JsonResponse({'data': data,})
     except:
         return JsonResponse({'data': False})
+
+
+
 
 
 
@@ -1366,7 +1419,7 @@ def gestionKaratra(request,id):
 
     if(len(karatra) == 0):
          for docs in doc:
-                r = str(docs.utilisateur.arrondissement.district.region.code)+str(docs.utilisateur.arrondissement.district.code)+str(docs.utilisateur.arrondissement.code)
+                r = str(docs.utilisateur.arrondissement.district.region.code)+str(docs.utilisateur.arrondissement.district.code)+str(docs.utilisateur.arrondissement.code)+str(docs.sexe)
                 if(docs.typeDocument == "primata"):
                     s = r+("000001")
                     kart = Karatra(numero = s, document = docs)
@@ -1381,7 +1434,14 @@ def gestionKaratra(request,id):
                 r = str(docs.utilisateur.arrondissement.district.region.code)+str(docs.utilisateur.arrondissement.district.code)+str(docs.utilisateur.arrondissement.code)
                 if(docs.typeDocument == "primata"):
                     if(v.numero.__contains__(r)):
-                        kart = Karatra(numero = str(int(karatra[len(karatra)-1].numero)+1) , document = docs)
+                        orig = karatra[len(karatra)-1].numero
+                        final = ""
+                        for i in range(len(orig)):
+                            if(i == 5):
+                                final = final + str(docs.sexe)
+                            else:
+                                final = final + orig[i]
+                        kart = Karatra(numero = str(int(final)+1) , document = docs)
                         kart.save()
                         return JsonResponse({'data': 'suite carte'})
                     else:
@@ -1507,11 +1567,13 @@ def verifier_perte(request):
         r = response.json().get('result', {}).get('text', [])
 
         for j in r:
-            if str(j["data"]).lower() == "declaration de perte":
+             if str(j["data"]).lower().__contains__("declaration de perte"):
                 return JsonResponse({'data': True})
 
+        print("fatal")
         return JsonResponse({'data': False})
     except:
+        print("fatal")
         return JsonResponse({'data': False})
 
 @api_view(["POST"])
@@ -1527,11 +1589,36 @@ def verifier_photo(request):
             files={'image': image_file})
 
         r = response.json().get('result', {}).get('tags', [])
-
+        one = False
+        two = False
+        genre = ""
         for i in r:
-            if i['tag']['en'] == "person" :
-                return JsonResponse({'data': True})
+            if(i["confidence"]>=20):
+                    
+                if i['tag']['en'] == "portrait" :
+                    two = True
+                
+                if i['tag']['en'] == "male" or i['tag']['en'] == "woman" :
+                    genre = i['tag']['en']
+                    one = True
+                if(one and two):
+                    print("ok")
+                    return JsonResponse({'data': True, 'genre':genre})
 
         return JsonResponse({'data': False})
     except:
         return JsonResponse({'data': False})
+    
+
+@api_view(["POST"])
+def verification_dupli(request):
+    try:
+        doc = Karatra.objects.filter(numero = request.POST.get("numCni"))
+        count = 0
+        
+        for i in range(doc.count()):
+            count+=1
+            
+        return JsonResponse({'data': count})
+    except:
+        return JsonResponse({'data': False}) 

@@ -19,7 +19,7 @@
   let checker1 = false;
   let datas;
   const getPosts = async () => {
-    users = sessionStorage.getItem("chef");
+    users = localStorage.getItem("chef");
 
     const res = await fetch("http://localhost:8000/afficheChef/" + users);
 
@@ -52,7 +52,7 @@
 
     let response;
     try {
-      let use = sessionStorage.getItem("chef");
+      let use = localStorage.getItem("chef");
       response = await fetch("http://localhost:8000/updateChef/" + use, {
         method: "POST",
         body: formdata,
@@ -70,7 +70,7 @@
           style: "font-size:15px; padding:10px",
           duration: 2000,
         });
-        sessionStorage.setItem("chef", donne.email);
+        localStorage.setItem("chef", donne.email);
         goto("/Chef/MenuAdmin");
       } else {
         toast.error("Erreur de serveur", {
@@ -85,8 +85,8 @@
 
   onMount(async () => {
     if (
-      sessionStorage.getItem("chef") == undefined ||
-      sessionStorage.getItem("chef") == ""
+      localStorage.getItem("chef") == undefined ||
+      localStorage.getItem("chef") == ""
     ) {
       goto("/Error");
     } else {

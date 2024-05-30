@@ -1,4 +1,6 @@
 <script>
+  // @ts-nocheck
+
   import { onMount } from "svelte";
   import ArrondListe from "../../../Components/ArrondListe.svelte";
   import HeaderAttenteSuperAdmin from "../../../Components/HeaderAttenteSuperAdmin.svelte";
@@ -14,7 +16,7 @@
   let cni = false;
   onMount(() => {
     try {
-      let id = sessionStorage.getItem("admin");
+      let id = localStorage.getItem("admin");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");

@@ -112,6 +112,7 @@ class Document(models.Model):
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     adresse = models.CharField(max_length=100)
+    sexe = models.CharField(max_length=100, blank=True)
     numCni = models.CharField(max_length=9, blank=True)
     photo =  models.ImageField(upload_to='front/src/lib/image/photo')
     declarationPerte = models.ImageField(upload_to='front/src/lib/image/perte',blank=True)

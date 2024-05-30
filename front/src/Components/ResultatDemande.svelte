@@ -19,7 +19,7 @@
   let date = "";
   let heure = "";
   let recuperer = "";
-  export let user = sessionStorage.getItem("identifiant");
+  export let user = localStorage.getItem("identifiant");
   let filtre;
   const getPosts1 = async () => {
     try {

@@ -25,7 +25,7 @@
   }
   onMount(() => {
     try {
-      let id = sessionStorage.getItem("identifiant");
+      let id = localStorage.getItem("identifiant");
 
       if (id == null || id == undefined || id == "") {
         goto("/Error");
@@ -35,11 +35,11 @@
     }
   });
   onMount(() => {
-    let u = sessionStorage.getItem("pub_id");
+    let u = localStorage.getItem("pub_id");
     fetchComm(u);
   });
   setInterval(() => {
-    let u = sessionStorage.getItem("pub_id");
+    let u = localStorage.getItem("pub_id");
     fetchComm(u);
   }, 500);
 </script>
